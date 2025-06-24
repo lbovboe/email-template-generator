@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "./components/ui/Button";
-import { Card, CardContent, CardHeader } from "./components/ui/Card";
+import { TemplateCard } from "./components/ui/TemplateCard";
 import { getFeaturedTemplates } from "./data/templates";
 
 const features = [
@@ -153,50 +155,15 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredTemplates.map((template, index) => (
-              <Card
+              <TemplateCard
                 key={template.id}
-                hover
-                gradient
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{template.name}</h3>
-                      <p className="text-gray-600 dark:text-gray-300 text-sm">{template.description}</p>
-                    </div>
-                    <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full capitalize">
-                      {template.category}
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      {template.tags.slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-md"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="pt-4">
-                      <Link href={`/generator?template=${template.id}`}>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full"
-                        >
-                          Use Template
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                template={template}
+                onSelect={(template) => {
+                  window.location.href = `/generator?template=${template.id}`;
+                }}
+                featured={true}
+                index={index}
+              />
             ))}
           </div>
 
@@ -237,17 +204,15 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card
+              <div
                 key={index}
-                className="text-center animate-fade-in hover-lift"
+                className="text-center animate-fade-in hover-lift bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-400/10 hover:-translate-y-2 transition-all duration-300 ease-out"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardContent className="p-8">
-                  <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>

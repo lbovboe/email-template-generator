@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Card, CardHeader } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
 import { DynamicForm } from "../../components/generator/DynamicForm";
 import { getTemplateById } from "../../data/templates";
@@ -236,8 +235,8 @@ ${variables.hostName || "Event Host"}`,
         {/* Main Content */}
         <div className="max-w-6xl mx-auto">
           <div className="animate-slide-up">
-            <Card className="mb-6">
-              <CardHeader>
+            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg mb-6">
+              <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{template.name}</h2>
@@ -250,8 +249,8 @@ ${variables.hostName || "Event Host"}`,
                     Change Template
                   </Button>
                 </div>
-              </CardHeader>
-            </Card>
+              </div>
+            </div>
 
             <DynamicForm
               template={template}

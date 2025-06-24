@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { EmailTemplate } from "../../types/email";
 
@@ -101,8 +100,8 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
   return (
     <div className="space-y-6">
       {/* Success Header */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-green-200 dark:border-green-800">
-        <CardContent className="p-6">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-green-200 dark:border-green-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6">
           <div className="flex items-center justify-center text-center">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
@@ -126,12 +125,12 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Email Statistics */}
-      <Card>
-        <CardContent className="p-6">
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{getWordCount(email)}</div>
@@ -152,12 +151,12 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               <div className="text-sm text-gray-600 dark:text-gray-400">Type</div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Email Display */}
-      <Card>
-        <CardHeader>
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Generated Email</h3>
             <div className="flex items-center space-x-2">
@@ -170,8 +169,8 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               </Button>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className="p-6">
           <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
             {showRawText ? (
               <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-200 font-mono">{email}</pre>
@@ -179,12 +178,12 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               <div className="text-gray-800 dark:text-gray-200 space-y-2">{formatEmailForDisplay(email)}</div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Action Buttons */}
-      <Card>
-        <CardContent className="p-6">
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Primary Actions */}
             <div className="flex-1 grid grid-cols-2 gap-4">
@@ -298,12 +297,12 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Tips */}
-      <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-        <CardContent className="p-6">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6">
           <div className="flex items-start space-x-3">
             <div className="text-2xl">💡</div>
             <div>
@@ -316,8 +315,8 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               </ul>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

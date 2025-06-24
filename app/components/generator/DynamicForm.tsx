@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
@@ -214,8 +213,8 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       className="space-y-6"
     >
       {/* Progress Indicator */}
-      <Card>
-        <CardContent className="p-6">
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Form Progress</h3>
             <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -228,18 +227,18 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
               style={{ width: `${progress}%` }}
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Form Fields */}
-      <Card>
-        <CardHeader>
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Email Details</h3>
           <p className="text-gray-600 dark:text-gray-300">
             Fill in the information below to customize your email template.
           </p>
-        </CardHeader>
-        <CardContent className="space-y-6">
+        </div>
+        <div className="p-6 space-y-6">
           <div className="grid gap-6">
             {template.variables.map((variable, index) => (
               <div
@@ -254,12 +253,12 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Action Buttons */}
-      <Card>
-        <CardContent className="p-6">
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+        <div className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
             <Button
               type="button"
@@ -322,8 +321,8 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
               Please complete all required fields to generate your email.
             </p>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </form>
   );
 };
