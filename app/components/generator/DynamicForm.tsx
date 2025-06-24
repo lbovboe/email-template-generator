@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
 import { Select } from "../ui/Select";
 import { EmailTemplate, EmailVariable, FormData } from "../../types/email";
+import { sessionStore } from "../../utils/sessionStorage";
 
 interface DynamicFormProps {
   template: EmailTemplate;
@@ -18,6 +19,14 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+
+  // Load saved form data on component mount
+  useEffect(() => {
+    const sessionData = sessionStore.get(template.id);
+    if (sessionData.formData) {
+      setFormData(sessionData.formData);
+    }
+  }, [template.id]);
 
   const validateField = (variable: EmailVariable, value: string): string | null => {
     if (variable.required && (!value || (typeof value === "string" && value.trim() === ""))) {
@@ -44,7 +53,11 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
   };
 
   const handleFieldChange = (variable: EmailVariable, value: string) => {
-    setFormData((prev) => ({ ...prev, [variable.name]: value }));
+    const newFormData = { ...formData, [variable.name]: value };
+    setFormData(newFormData);
+
+    // Auto-save to session storage
+    sessionStore.save(template.id, { formData: newFormData });
 
     // Clear error when user starts typing
     if (errors[variable.name]) {
