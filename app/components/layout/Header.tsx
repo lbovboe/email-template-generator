@@ -96,29 +96,30 @@ export const Header: React.FC = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            {pathname !== "/generator" && (
-              <Link href="/generator">
-                <Button
-                  size="md"
-                  className="shadow-lg"
+            <Link
+              href="/generator"
+              className={pathname === "/generator" ? "invisible" : ""}
+            >
+              <Button
+                size="md"
+                className="shadow-lg"
+              >
+                Start Generating
+                <svg
+                  className="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Start Generating
-                  <svg
-                    className="w-4 h-4 ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
-                </Button>
-              </Link>
-            )}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -165,34 +166,36 @@ export const Header: React.FC = () => {
                 {item.name}
               </Link>
             ))}
-            {pathname !== "/generator" && (
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <Link
-                  href="/generator"
-                  onClick={() => setIsMenuOpen(false)}
+            <div
+              className={`pt-4 border-t border-gray-200 dark:border-gray-700 ${
+                pathname === "/generator" ? "invisible" : ""
+              }`}
+            >
+              <Link
+                href="/generator"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button
+                  size="md"
+                  className="w-full"
                 >
-                  <Button
-                    size="md"
-                    className="w-full"
+                  Start Generating
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    Start Generating
-                    <svg
-                      className="w-4 h-4 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
-                  </Button>
-                </Link>
-              </div>
-            )}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </Button>
+              </Link>
+            </div>
           </nav>
         </div>
       </div>

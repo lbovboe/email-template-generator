@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "./components/layout/Header";
@@ -15,14 +15,18 @@ export const metadata: Metadata = {
     "Generate professional emails with AI-powered templates. Create business emails, cold outreach, customer support responses, and more with our intelligent email generator.",
   keywords: ["email generator", "AI email", "email templates", "business emails", "email automation"],
   authors: [{ name: "AI Email Generator" }],
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#6366f1",
   openGraph: {
     title: "AI Email Generator - Professional Email Templates",
     description: "Generate professional emails with AI-powered templates",
     type: "website",
     locale: "en_US",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#6366f1",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
