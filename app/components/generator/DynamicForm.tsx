@@ -13,14 +13,22 @@ interface DynamicFormProps {
   isLoading: boolean;
 }
 
-export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, isLoading }) => {
+export const DynamicForm: React.FC<DynamicFormProps> = ({
+  template,
+  onSubmit,
+  isLoading,
+}) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
 
   // Custom dropdown state
-  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
-  const [focusedOptions, setFocusedOptions] = useState<Record<string, number>>({});
+  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [focusedOptions, setFocusedOptions] = useState<Record<string, number>>(
+    {}
+  );
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Load saved form data on component mount
@@ -37,7 +45,8 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       const target = event.target as HTMLElement;
       let shouldClose = true;
 
-      Object.entries(dropdownRefs.current).forEach(([fieldName, ref]) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(dropdownRefs.current).forEach(([_, ref]) => {
         if (ref && ref.contains(target)) {
           shouldClose = false;
         }
@@ -67,7 +76,11 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
     }));
   };
 
-  const selectOption = (fieldName: string, value: string, variable: EmailVariable) => {
+  const selectOption = (
+    fieldName: string,
+    value: string,
+    variable: EmailVariable
+  ) => {
     handleFieldChange(variable, value);
     setOpenDropdowns((prev) => ({
       ...prev,
@@ -125,8 +138,14 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
     }
   };
 
-  const validateField = (variable: EmailVariable, value: string): string | null => {
-    if (variable.required && (!value || (typeof value === "string" && value.trim() === ""))) {
+  const validateField = (
+    variable: EmailVariable,
+    value: string
+  ): string | null => {
+    if (
+      variable.required &&
+      (!value || (typeof value === "string" && value.trim() === ""))
+    ) {
       return `${variable.label} is required`;
     }
 
@@ -205,7 +224,9 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
 
   const renderField = (variable: EmailVariable) => {
     const value = formData[variable.name] || "";
-    const error = touchedFields.has(variable.name) ? errors[variable.name] : undefined;
+    const error = touchedFields.has(variable.name)
+      ? errors[variable.name]
+      : undefined;
     const isRequired = variable.required;
 
     const commonProps = {
@@ -246,7 +267,10 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
         const focusedIndex = focusedOptions[variable.name] || -1;
         const options = variable.options || [];
         const selectedOption = options.find((opt) => opt === value);
-        const displayValue = selectedOption || variable.placeholder || `Select ${variable.label.toLowerCase()}`;
+        const displayValue =
+          selectedOption ||
+          variable.placeholder ||
+          `Select ${variable.label.toLowerCase()}`;
 
         return (
           <div
@@ -271,10 +295,13 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
               role="combobox"
               aria-expanded={isDropdownOpen}
               aria-haspopup="listbox"
+              aria-controls={`${selectId}-listbox`}
               aria-label={commonProps.label}
               tabIndex={0}
               onClick={() => toggleDropdown(variable.name)}
-              onKeyDown={(e) => handleDropdownKeyDown(e, variable.name, variable, options)}
+              onKeyDown={(e) =>
+                handleDropdownKeyDown(e, variable.name, variable, options)
+              }
               onBlur={commonProps.onBlur}
               className={`
                 relative w-full px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer
@@ -287,11 +314,19 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
                     : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                 }
                 text-gray-900 dark:text-white
-                ${isDropdownOpen ? "ring-2 ring-purple-500/50 border-transparent" : ""}
+                ${
+                  isDropdownOpen
+                    ? "ring-2 ring-purple-500/50 border-transparent"
+                    : ""
+                }
               `.trim()}
             >
               <div className="flex items-center justify-between">
-                <span className={`block truncate ${!selectedOption ? "text-gray-500 dark:text-gray-400" : ""}`}>
+                <span
+                  className={`block truncate ${
+                    !selectedOption ? "text-gray-500 dark:text-gray-400" : ""
+                  }`}
+                >
                   {displayValue}
                 </span>
                 <svg
@@ -314,13 +349,19 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
 
             {/* Custom Dropdown Menu */}
             {isDropdownOpen && (
-              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white/95 dark:bg-gray-800/95  border border-gray-200/50 dark:border-gray-700/50 rounded-xl shadow-xl max-h-60 overflow-auto">
+              <div
+                id={`${selectId}-listbox`}
+                role="listbox"
+                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white/95 dark:bg-gray-800/95  border border-gray-200/50 dark:border-gray-700/50 rounded-xl shadow-xl max-h-60 overflow-auto"
+              >
                 {options.map((option, index) => (
                   <div
                     key={option}
                     role="option"
                     aria-selected={option === value}
-                    onClick={() => selectOption(variable.name, option, variable)}
+                    onClick={() =>
+                      selectOption(variable.name, option, variable)
+                    }
                     className={`
                       px-4 py-3 cursor-pointer transition-all duration-150
                       hover:bg-purple-50 dark:hover:bg-purple-900/30
@@ -329,7 +370,11 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
                           ? "bg-purple-100 dark:bg-purple-900/50 text-purple-900 dark:text-purple-100 font-medium"
                           : "text-gray-900 dark:text-white"
                       }
-                      ${index === focusedIndex ? "bg-purple-50 dark:bg-purple-900/20" : ""}
+                      ${
+                        index === focusedIndex
+                          ? "bg-purple-50 dark:bg-purple-900/20"
+                          : ""
+                      }
                       ${index === 0 ? "rounded-t-xl" : ""}
                       ${index === options.length - 1 ? "rounded-b-xl" : ""}
                     `.trim()}
@@ -353,16 +398,22 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
                   </div>
                 ))}
                 {options.length === 0 && (
-                  <div className="px-4 py-3 text-gray-500 dark:text-gray-400 text-center">No options available</div>
+                  <div className="px-4 py-3 text-gray-500 dark:text-gray-400 text-center">
+                    No options available
+                  </div>
                 )}
               </div>
             )}
 
             {commonProps.error && (
-              <p className="form-error mt-2 text-sm text-red-600 dark:text-red-400">{commonProps.error}</p>
+              <p className="form-error mt-2 text-sm text-red-600 dark:text-red-400">
+                {commonProps.error}
+              </p>
             )}
             {commonProps.helperText && !commonProps.error && (
-              <p className="form-help mt-2 text-sm text-gray-500 dark:text-gray-400">{commonProps.helperText}</p>
+              <p className="form-help mt-2 text-sm text-gray-500 dark:text-gray-400">
+                {commonProps.helperText}
+              </p>
             )}
           </div>
         );
@@ -382,7 +433,9 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       case "multiselect":
         // For now, we'll render as text input with comma separation
         const multiselectHelperText = `${variable.description || ""} ${
-          variable.description ? "(separate multiple items with commas)" : "Separate multiple items with commas"
+          variable.description
+            ? "(separate multiple items with commas)"
+            : "Separate multiple items with commas"
         }`;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { helperText: _, ...multiselectCommonProps } = commonProps;
@@ -392,7 +445,9 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
             type="text"
             value={value}
             onChange={(e) => handleFieldChange(variable, e.target.value)}
-            placeholder={variable.placeholder || "Enter items separated by commas"}
+            placeholder={
+              variable.placeholder || "Enter items separated by commas"
+            }
             helperText={multiselectHelperText}
             {...multiselectCommonProps}
           />
@@ -416,20 +471,23 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
 
   const requiredFields = template.variables.filter((v) => v.required).length;
   const completedFields = template.variables.filter(
-    (v) => v.required && formData[v.name] && formData[v.name].toString().trim() !== ""
+    (v) =>
+      v.required &&
+      formData[v.name] &&
+      formData[v.name].toString().trim() !== ""
   ).length;
-  const progress = requiredFields > 0 ? (completedFields / requiredFields) * 100 : 100;
+  const progress =
+    requiredFields > 0 ? (completedFields / requiredFields) * 100 : 100;
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* Progress Indicator */}
       <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Form Progress</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Form Progress
+            </h3>
             <span className="text-sm text-gray-600 dark:text-gray-400">
               {completedFields} of {requiredFields} required fields completed
             </span>
@@ -446,20 +504,21 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       {/* Form Fields */}
       <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
         <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Email Details</h3>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Email Details
+          </h3>
           <p className="text-gray-600 dark:text-gray-300">
             Fill in the information below to customize your email template.
           </p>
         </div>
         <div className="p-6 space-y-6">
           <div className="grid gap-6">
-            {template.variables.map((variable, index) => (
-              <div
-                key={variable.name}
-                className=""
-              >
+            {template.variables.map((variable) => (
+              <div key={variable.name} className="">
                 <div className="flex items-start space-x-3">
-                  <div className="text-2xl mt-2">{getFieldIcon(variable.type)}</div>
+                  <div className="text-2xl mt-2">
+                    {getFieldIcon(variable.type)}
+                  </div>
                   <div className="flex-1">{renderField(variable)}</div>
                 </div>
               </div>
