@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button } from "../../components/ui/Button";
 import { DynamicForm } from "../../components/generator/DynamicForm";
 import { getTemplateById } from "../../data/templates";
 import { EmailTemplate, FormData } from "../../types/email";
@@ -260,11 +259,6 @@ ${variables.hostName || "Event Host"}`,
     );
   };
 
-  const handleStartOver = () => {
-    sessionStore.clear(templateId);
-    router.push("/generator");
-  };
-
   if (!template) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -287,8 +281,6 @@ ${variables.hostName || "Event Host"}`,
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
             Customize your {template.name.toLowerCase()} with the details below.
           </p>
-
-        
         </div>
 
         {/* Progress Steps */}
