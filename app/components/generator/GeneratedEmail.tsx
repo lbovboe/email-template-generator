@@ -355,6 +355,43 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
         </div>
       </div>
 
+      {/* Usage Warning */}
+      <div className="bg-amber-50/90 dark:bg-amber-900/20 backdrop-blur-sm border border-amber-200 dark:border-amber-800 rounded-2xl shadow-lg">
+        <div className="p-6">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0">
+              <svg
+                className="w-6 h-6 text-amber-600 dark:text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">
+                ⚠️ Usage Notice - Portfolio Demo Only
+              </h4>
+              <div className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
+                <p>
+                  <strong>Important:</strong> This email generator is currently for{" "}
+                  <strong>personal portfolio demonstration purposes only</strong>.
+                </p>
+                <p>• Please avoid daily or excessive usage as each generation incurs API costs</p>
+                <p>• Test the functionality briefly and then stop to help keep costs manageable</p>
+                <p>• Thank you for being considerate with usage during this demo period! 🙏</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Email Display */}
       <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden">
         <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20">
