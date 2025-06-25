@@ -100,7 +100,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
   return (
     <div className="space-y-6">
       {/* Success Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-green-200 dark:border-green-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800 rounded-2xl shadow-lg backdrop-blur-sm">
         <div className="p-6">
           <div className="flex items-center justify-center text-center">
             <div className="flex items-center space-x-3">
@@ -301,7 +301,6 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
       </div>
 
       {/* Tips */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-start space-x-3">
             <div className="text-2xl">💡</div>
