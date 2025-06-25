@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <footer className="relative z-10 mt-auto py-8 px-4 border-t border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
             <div className="container-responsive text-center">
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                © 2024 AI Email Generator. Powered by advanced language models for professional communication.
+                © 2025 AI Email Generator. Powered by advanced language models for professional communication.
               </p>
             </div>
           </footer>
