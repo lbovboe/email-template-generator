@@ -189,10 +189,10 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
             className={`
               ${isGreeting ? "text-gray-900 dark:text-white mb-4" : ""}
               ${isClosing || isSignature ? "text-gray-800 dark:text-gray-200 mt-6" : ""}
-              ${isBulletPoint || isNumberedList ? "ml-4 text-gray-700 dark:text-gray-300 mb-2" : ""}
+              ${isBulletPoint || isNumberedList ? "ml-8 text-gray-700 dark:text-gray-300 mb-2" : ""}
               ${
                 !isGreeting && !isClosing && !isSignature && !isBulletPoint && !isNumberedList
-                  ? "leading-relaxed text-gray-700 dark:text-gray-300 mb-4"
+                  ? "leading-relaxed text-gray-700 dark:text-gray-300 mb-4 ml-6 pl-2"
                   : ""
               }
             `}
