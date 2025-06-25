@@ -16,6 +16,17 @@ export default function FormPage() {
   const [template, setTemplate] = useState<EmailTemplate | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
+  const getCategoryIcon = (category: string) => {
+    const icons = {
+      business: "💼",
+      personal: "👤",
+      marketing: "📈",
+      support: "🛠️",
+      sales: "💰",
+    };
+    return icons[category as keyof typeof icons] || "📧";
+  };
+
   useEffect(() => {
     const foundTemplate = getTemplateById(templateId);
     if (!foundTemplate) {
@@ -269,13 +280,24 @@ ${variables.hostName || "Event Host"}`,
     <div className="min-h-screen py-8">
       <div className="container-responsive">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 relative">
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             AI Email Generator
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
             Customize your {template.name.toLowerCase()} with the details below.
           </p>
+
+          {/* Start Over Button */}
+          <div className="flex justify-center">
+            <Button
+              onClick={handleStartOver}
+              variant="outline"
+              className="bg-white/50 hover:bg-white/80 border-gray-300 text-gray-700 hover:text-gray-900 transition-all duration-300 backdrop-blur-sm"
+            >
+              ← Start Over
+            </Button>
+          </div>
         </div>
 
         {/* Progress Steps */}
@@ -316,7 +338,9 @@ ${variables.hostName || "Event Host"}`,
           <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl shadow-lg mb-6">
             <div className="p-6">
               <div className="flex items-start space-x-4">
-                <div className="text-4xl">{template.icon}</div>
+                <div className="text-4xl">
+                  {getCategoryIcon(template.category)}
+                </div>
                 <div className="flex-1">
                   <h2 className="text-2xl font-bold text-gray-900">
                     {template.name}
