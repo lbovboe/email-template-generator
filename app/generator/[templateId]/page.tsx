@@ -57,13 +57,23 @@ export default function FormPage() {
       let generatedEmail = result.email || "Failed to generate email content.";
 
       // SAFETY CHECK: If the result is still a JSON string, parse it again
-      if (typeof generatedEmail === "string" && generatedEmail.startsWith("{") && generatedEmail.includes('"email"')) {
+      if (
+        typeof generatedEmail === "string" &&
+        generatedEmail.startsWith("{") &&
+        generatedEmail.includes('"email"')
+      ) {
         try {
           const parsedAgain = JSON.parse(generatedEmail);
           generatedEmail = parsedAgain.email || generatedEmail;
-          console.log("WARNING: Had to parse email content twice, fixed:", generatedEmail.substring(0, 100));
+          console.log(
+            "WARNING: Had to parse email content twice, fixed:",
+            generatedEmail.substring(0, 100)
+          );
         } catch (e) {
-          console.log("Email content appears to be a JSON string but couldn't parse:", e);
+          console.log(
+            "Email content appears to be a JSON string but couldn't parse:",
+            e
+          );
         }
       }
 
@@ -72,8 +82,14 @@ export default function FormPage() {
       console.log("Full API response:", result);
       console.log("Extracted email content:", generatedEmail);
       console.log("Email content length:", generatedEmail.length);
-      console.log("Email content preview (first 200 chars):", generatedEmail.substring(0, 200));
-      console.log("Raw email content (showing newlines):", JSON.stringify(generatedEmail));
+      console.log(
+        "Email content preview (first 200 chars):",
+        generatedEmail.substring(0, 200)
+      );
+      console.log(
+        "Raw email content (showing newlines):",
+        JSON.stringify(generatedEmail)
+      );
 
       // Save generated email to session storage
       sessionStore.save(templateId, { generatedEmail: generatedEmail });
@@ -83,7 +99,10 @@ export default function FormPage() {
       console.log("=== Session Storage Debug ===");
       console.log("Data saved to session:", savedData);
       console.log("Retrieved email from session:", savedData.generatedEmail);
-      console.log("Session email matches original:", savedData.generatedEmail === generatedEmail);
+      console.log(
+        "Session email matches original:",
+        savedData.generatedEmail === generatedEmail
+      );
 
       // Navigate to result page
       router.push(`/generator/${templateId}/result`);
@@ -99,16 +118,21 @@ export default function FormPage() {
     }
   };
 
-  const generateDemoEmail = (template: EmailTemplate, variables: Record<string, string>) => {
+  const generateDemoEmail = (
+    template: EmailTemplate,
+    variables: Record<string, string>
+  ) => {
     // Demo email generation for when API is not available
     const demoEmails = {
-      "professional-business": `Subject: ${variables.emailType || "Business Matter"} - ${
-        variables.purpose || "Discussion"
-      }
+      "professional-business": `Subject: ${
+        variables.emailType || "Business Matter"
+      } - ${variables.purpose || "Discussion"}
 
 Dear ${variables.recipient || "Colleague"},
 
-I hope this email finds you well. I am writing to ${variables.purpose || "discuss an important business matter"}.
+I hope this email finds you well. I am writing to ${
+        variables.purpose || "discuss an important business matter"
+      }.
 
 ${
   variables.additionalContext ? `${variables.additionalContext}\n\n` : ""
@@ -117,24 +141,31 @@ ${
 Best regards,
 ${variables.senderName || "Your Name"}`,
 
-      "cold-outreach": `Subject: ${variables.valueProposition ? "Partnership Opportunity" : "Introduction"} - ${
-        variables.senderCompany || "Your Company"
-      }
+      "cold-outreach": `Subject: ${
+        variables.valueProposition ? "Partnership Opportunity" : "Introduction"
+      } - ${variables.senderCompany || "Your Company"}
 
 Hi ${variables.recipientName || "Name"},
 
-${variables.connectionPoint ? `${variables.connectionPoint}\n\n` : ""}I'm ${variables.senderName || "Your Name"} from ${
-        variables.senderCompany || "Your Company"
-      }. ${variables.valueProposition || "I wanted to reach out about a potential opportunity."} 
+${variables.connectionPoint ? `${variables.connectionPoint}\n\n` : ""}I'm ${
+        variables.senderName || "Your Name"
+      } from ${variables.senderCompany || "Your Company"}. ${
+        variables.valueProposition ||
+        "I wanted to reach out about a potential opportunity."
+      } 
 
 ${
-  variables.recipientInterest ? `I believe this could help with ${variables.recipientInterest}.\n\n` : ""
+  variables.recipientInterest
+    ? `I believe this could help with ${variables.recipientInterest}.\n\n`
+    : ""
 }Would you be interested in ${variables.callToAction || "learning more"}?
 
 Best regards,
 ${variables.senderName || "Your Name"}`,
 
-      "customer-support": `Subject: Re: ${variables.issueType || "Support Request"} - We're Here to Help
+      "customer-support": `Subject: Re: ${
+        variables.issueType || "Support Request"
+      } - We're Here to Help
 
 Dear ${variables.customerName || "Valued Customer"},
 
@@ -142,8 +173,15 @@ Thank you for reaching out regarding ${
         variables.issueDescription || "your recent inquiry"
       }. I understand your concern and I'm here to help resolve this matter.
 
-${variables.solution || "I will investigate this issue and provide you with a solution."} ${
-        variables.timeline ? `You can expect a resolution ${variables.timeline.toString().toLowerCase()}.` : ""
+${
+  variables.solution ||
+  "I will investigate this issue and provide you with a solution."
+} ${
+        variables.timeline
+          ? `You can expect a resolution ${variables.timeline
+              .toString()
+              .toLowerCase()}.`
+          : ""
       }
 
 Please don't hesitate to reach out if you have any questions or need further assistance.
@@ -151,15 +189,15 @@ Please don't hesitate to reach out if you have any questions or need further ass
 Best regards,
 ${variables.supportRepName || "Support Team"}`,
 
-      "job-application": `Subject: Application for ${variables.position || "Position"} at ${
-        variables.companyName || "Company"
-      }
+      "job-application": `Subject: Application for ${
+        variables.position || "Position"
+      } at ${variables.companyName || "Company"}
 
 Dear Hiring Manager,
 
-I am writing to express my strong interest in the ${variables.position || "position"} role at ${
-        variables.companyName || "your company"
-      }. 
+I am writing to express my strong interest in the ${
+        variables.position || "position"
+      } role at ${variables.companyName || "your company"}. 
 
 ${
   variables.relevantExperience || "With my relevant experience"
@@ -176,9 +214,9 @@ Thank you for your consideration.
 Sincerely,
 ${variables.applicantName || "Your Name"}`,
 
-      "event-invitation": `Subject: You're Invited: ${variables.eventName || "Special Event"} - ${
-        variables.eventDate || "Date TBD"
-      }
+      "event-invitation": `Subject: You're Invited: ${
+        variables.eventName || "Special Event"
+      } - ${variables.eventDate || "Date TBD"}
 
 Dear Valued Guest,
 
@@ -189,11 +227,14 @@ You're cordially invited to ${variables.eventName || "our upcoming event"}!
 📍 Location: ${variables.eventLocation || "TBD"}
 
 ${
-  variables.eventPurpose || "Join us for an exciting event where you can connect with peers and enjoy great activities."
+  variables.eventPurpose ||
+  "Join us for an exciting event where you can connect with peers and enjoy great activities."
 }
 
 ${variables.rsvpInstructions || "Please RSVP by replying to this email."}${
-        variables.specialRequirements ? `\n\nPlease note: ${variables.specialRequirements}` : ""
+        variables.specialRequirements
+          ? `\n\nPlease note: ${variables.specialRequirements}`
+          : ""
       }
 
 We look forward to seeing you there!
@@ -218,7 +259,7 @@ ${variables.hostName || "Event Host"}`,
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading template...</p>
+          <p className="text-gray-600">Loading template...</p>
         </div>
       </div>
     );
@@ -229,64 +270,68 @@ ${variables.hostName || "Event Host"}`,
       <div className="container-responsive">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">AI Email Generator</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Fill in the details below to customize your email template.
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            AI Email Generator
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Customize your {template.name.toLowerCase()} with the details below.
           </p>
         </div>
 
         {/* Progress Steps */}
         <div className="flex justify-center mb-12">
-          <div className="flex items-center space-x-4 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 dark:border-gray-700/50">
+          <div className="flex items-center space-x-4 bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50">
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-green-500 text-white">
                 ✓
               </div>
-              <span className="ml-3 font-medium text-gray-600 dark:text-gray-400">Select Template</span>
+              <span className="ml-3 font-medium text-gray-600">
+                Select Template
+              </span>
             </div>
-            <div className="w-12 h-0.5 bg-gray-200 dark:bg-gray-700 mx-4" />
+            <div className="w-12 h-0.5 bg-gray-200 mx-4" />
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-purple-600 text-white shadow-lg">
                 2
               </div>
-              <span className="ml-3 font-medium text-purple-600 dark:text-purple-400">Fill Details</span>
+              <span className="ml-3 font-medium text-purple-600">
+                Fill Details
+              </span>
             </div>
-            <div className="w-12 h-0.5 bg-gray-200 dark:bg-gray-700 mx-4" />
+            <div className="w-12 h-0.5 bg-gray-200 mx-4" />
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-200 text-gray-600">
                 3
               </div>
-              <span className="ml-3 font-medium text-gray-600 dark:text-gray-400">Generate Email</span>
+              <span className="ml-3 font-medium text-gray-600">
+                Generate Email
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="max-w-6xl mx-auto">
-          <div className="animate-slide-up">
-            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg mb-6">
-              <div className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{template.name}</h2>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1">{template.description}</p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    onClick={handleStartOver}
-                  >
-                    Change Template
-                  </Button>
+        {/* Template Info and Form */}
+        <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
+          {/* Template Information */}
+          <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl shadow-lg mb-6">
+            <div className="p-6">
+              <div className="flex items-start space-x-4">
+                <div className="text-4xl">{template.icon}</div>
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {template.name}
+                  </h2>
+                  <p className="text-gray-600 mt-1">{template.description}</p>
                 </div>
               </div>
             </div>
-
-            <DynamicForm
-              template={template}
-              onSubmit={handleFormSubmit}
-              isLoading={isGenerating}
-            />
           </div>
+
+          <DynamicForm
+            template={template}
+            onSubmit={handleFormSubmit}
+            isLoading={isGenerating}
+          />
         </div>
       </div>
     </div>

@@ -303,9 +303,9 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({
   return (
     <div className="space-y-6">
       {/* TEMPORARY DEBUG SECTION */}
-      {/* <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
-        <h4 className="font-bold text-red-800 dark:text-red-200 mb-2">🐛 DEBUG INFO (Remove this later)</h4>
-        <div className="text-sm text-red-700 dark:text-red-300 space-y-1">
+      {/* <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+        <h4 className="font-bold text-red-800 mb-2">🐛 DEBUG INFO (Remove this later)</h4>
+        <div className="text-sm text-red-700 space-y-1">
           <div>Email length: {processedEmail?.length || 0}</div>
           <div>Has content: {processedEmail && processedEmail.trim() !== "" ? "YES" : "NO"}</div>
           <div>Template: {template?.name || "No template"}</div>
@@ -313,7 +313,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({
           <div>Body length: {body?.length || 0}</div>
           <details className="mt-2">
             <summary className="cursor-pointer font-medium">Raw email content</summary>
-            <pre className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs overflow-auto">
+            <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-auto">
               Original: {email || "No email content"}
               {email !== processedEmail && (
                 <>
@@ -344,8 +344,8 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({
                 </svg>
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Email Generated Successfully!</h2>
-                <p className="text-gray-600 dark:text-gray-300">Your professional email is ready to use</p>
+                <h2 className="text-2xl font-bold text-gray-900">Email Generated Successfully!</h2>
+                <p className="text-gray-600">Your professional email is ready to use</p>
               </div>
             </div>
           </div>
@@ -388,12 +388,12 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({
       </div>
 
       {/* Usage Warning */}
-      {/* <div className="bg-amber-50/90 dark:bg-amber-900/20 backdrop-blur-sm border border-amber-200 dark:border-amber-800 rounded-2xl shadow-lg">
+      {/* <div className="bg-amber-50/90 backdrop-blur-sm border border-amber-200 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0">
               <svg
-                className="w-6 h-6 text-amber-600 dark:text-amber-400"
+                className="w-6 h-6 text-amber-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -407,10 +407,10 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({
               </svg>
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">
+              <h4 className="font-semibold text-amber-800 mb-2">
                 ⚠️ Usage Notice - Portfolio Demo Only
               </h4>
-              <div className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
+              <div className="text-sm text-amber-700 space-y-1">
                 <p>
                   <strong>Important:</strong> This email generator is currently for{" "}
                   <strong>personal portfolio demonstration purposes only</strong>.

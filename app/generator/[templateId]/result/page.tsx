@@ -34,9 +34,18 @@ export default function ResultPage() {
     console.log("=== Result Page Debug ===");
     console.log("Session data retrieved:", sessionData);
     console.log("Generated email content:", sessionData.generatedEmail);
-    console.log("Email content length:", sessionData.generatedEmail?.length || 0);
-    console.log("Email content preview:", sessionData.generatedEmail?.substring(0, 200) || "No content");
-    console.log("Raw email content (showing newlines):", JSON.stringify(sessionData.generatedEmail));
+    console.log(
+      "Email content length:",
+      sessionData.generatedEmail?.length || 0
+    );
+    console.log(
+      "Email content preview:",
+      sessionData.generatedEmail?.substring(0, 200) || "No content"
+    );
+    console.log(
+      "Raw email content (showing newlines):",
+      JSON.stringify(sessionData.generatedEmail)
+    );
 
     setTemplate(foundTemplate);
     setGeneratedEmail(sessionData.generatedEmail);
@@ -56,7 +65,7 @@ export default function ResultPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading result...</p>
+          <p className="text-gray-600">Loading result...</p>
         </div>
       </div>
     );
@@ -67,34 +76,43 @@ export default function ResultPage() {
       <div className="container-responsive">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">AI Email Generator</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Your professional email is ready! Review, copy, or make changes as needed.
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            AI Email Generator
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Your professional email is ready! Review, copy, or make changes as
+            needed.
           </p>
         </div>
 
         {/* Progress Steps */}
         <div className="flex justify-center mb-12">
-          <div className="flex items-center space-x-4 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 dark:border-gray-700/50">
+          <div className="flex items-center space-x-4 bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50">
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-green-500 text-white">
                 ✓
               </div>
-              <span className="ml-3 font-medium text-gray-600 dark:text-gray-400">Select Template</span>
+              <span className="ml-3 font-medium text-gray-600">
+                Select Template
+              </span>
             </div>
-            <div className="w-12 h-0.5 bg-gray-200 dark:bg-gray-700 mx-4" />
+            <div className="w-12 h-0.5 bg-gray-200 mx-4" />
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-green-500 text-white">
                 ✓
               </div>
-              <span className="ml-3 font-medium text-gray-600 dark:text-gray-400">Fill Details</span>
+              <span className="ml-3 font-medium text-gray-600">
+                Fill Details
+              </span>
             </div>
-            <div className="w-12 h-0.5 bg-gray-200 dark:bg-gray-700 mx-4" />
+            <div className="w-12 h-0.5 bg-gray-200 mx-4" />
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-purple-600 text-white shadow-lg">
                 ✓
               </div>
-              <span className="ml-3 font-medium text-purple-600 dark:text-purple-400">Generate Email</span>
+              <span className="ml-3 font-medium text-purple-600">
+                Generate Email
+              </span>
             </div>
           </div>
         </div>

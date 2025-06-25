@@ -478,17 +478,17 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Progress Indicator */}
-      <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+      <div className="bg-white/80 border border-gray-200/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-gray-900">
               Form Progress
             </h3>
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm text-gray-600">
               {completedFields} of {requiredFields} required fields completed
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-2">
             <div
               className="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
@@ -498,12 +498,10 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
       </div>
 
       {/* Form Fields */}
-      <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
-        <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Email Details
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300">
+      <div className="bg-white/80 border border-gray-200/50 rounded-2xl shadow-lg">
+        <div className="p-6 border-b border-gray-200/50">
+          <h3 className="text-xl font-semibold text-gray-900">Email Details</h3>
+          <p className="text-gray-600">
             Fill in the information below to customize your email template.
           </p>
         </div>
@@ -524,7 +522,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+      <div className="bg-white/80 border border-gray-200/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
             <Button
@@ -587,7 +585,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
           </div>
 
           {progress < 100 && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 text-center">
+            <p className="text-sm text-gray-500 mt-3 text-center">
               Please complete all required fields to generate your email.
             </p>
           )}
