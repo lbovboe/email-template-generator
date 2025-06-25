@@ -288,16 +288,7 @@ ${variables.hostName || "Event Host"}`,
             Customize your {template.name.toLowerCase()} with the details below.
           </p>
 
-          {/* Start Over Button */}
-          <div className="flex justify-center">
-            <Button
-              onClick={handleStartOver}
-              variant="outline"
-              className="bg-white/50 hover:bg-white/80 border-gray-300 text-gray-700 hover:text-gray-900 transition-all duration-300 backdrop-blur-sm"
-            >
-              ← Start Over
-            </Button>
-          </div>
+        
         </div>
 
         {/* Progress Steps */}
