@@ -1,16 +1,20 @@
 # AI Email Generator
 
-A modern, professional email generator powered by AI that helps you create compelling business emails, cold outreach, customer support responses, and more in seconds.
+A modern, professional email generator powered by the latest AI models including **GPT-4.1 Nano** that helps you create compelling business emails, cold outreach, customer support responses, and more in seconds.
 
 ![AI Email Generator](https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=1200&h=400&fit=crop&crop=center)
 
 ## ✨ Features
 
-### 🤖 AI-Powered Generation
+### 🤖 Latest AI Models
 
-- Leverage advanced language models (OpenAI GPT, Anthropic Claude)
-- Contextually appropriate email generation
-- Professional, well-structured output
+- **GPT-4.1 Nano**: Fastest and cheapest model in GPT-4.1 series (Default)
+  - 1M token context window
+  - 32K output tokens
+  - Optimized for low-latency tasks
+  - $0.10/M input + $0.40/M output tokens
+- **Claude 3.5 Sonnet**: Latest Anthropic model for high-quality outputs
+- **Multiple Model Support**: Choose from various OpenAI and Anthropic models
 
 ### 📝 Smart Templates
 
@@ -205,9 +209,15 @@ The project uses Tailwind CSS with custom utility classes defined in `globals.cs
 
 ### Supported Providers
 
-- **OpenAI**: GPT-3.5-turbo, GPT-4
-- **Anthropic**: Claude-3-sonnet, Claude-3-opus
-- **Local Models**: Ollama integration ready
+- **OpenAI**:
+  - `gpt-4.1-nano` (Default - Latest, fastest, cheapest)
+  - `gpt-4o-mini` (Balanced performance/cost)
+  - `gpt-4o` (High-quality outputs)
+  - `gpt-3.5-turbo` (Legacy support)
+- **Anthropic**:
+  - `claude-3-5-sonnet-20241022` (Default - Latest model)
+  - `claude-3-sonnet-20240229` (Previous version)
+  - `claude-3-haiku-20240307` (Fast, lightweight)
 - **Demo Mode**: Works without API keys
 
 ### Environment Variables

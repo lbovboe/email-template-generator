@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -19,7 +19,8 @@ export const Select: React.FC<SelectProps> = ({
   id,
   ...props
 }) => {
-  const selectId = id || `select-${Math.random().toString(36).substring(2, 9)}`;
+  const generatedId = useId();
+  const selectId = id || generatedId;
 
   const baseClasses =
     "w-full px-4 py-3 rounded-xl border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-no-repeat bg-right bg-[length:1rem] bg-[position:right_1rem_center]";

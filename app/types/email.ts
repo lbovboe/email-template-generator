@@ -46,6 +46,20 @@ export interface LLMProvider {
   defaultModel?: string;
 }
 
+// Latest OpenAI model options for email generation
+export const OPENAI_MODELS = [
+  "gpt-4.1-nano", // Latest: Fastest, cheapest, 1M context, 32K output
+  "gpt-4o-mini", // Alternative: Balanced performance/cost
+  "gpt-4o", // Alternative: High-quality outputs
+  "gpt-3.5-turbo", // Legacy: Basic functionality
+] as const;
+
+export const ANTHROPIC_MODELS = [
+  "claude-3-5-sonnet-20241022", // Latest Claude model
+  "claude-3-sonnet-20240229", // Previous version
+  "claude-3-haiku-20240307", // Fast, lightweight option
+] as const;
+
 export interface GenerationRequest {
   template: EmailTemplate;
   variables: Record<string, string>;

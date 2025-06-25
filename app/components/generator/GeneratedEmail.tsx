@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../ui/Button";
 import { EmailTemplate } from "../../types/email";
 
@@ -14,6 +14,12 @@ interface GeneratedEmailProps {
 export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template, onStartOver, onEdit }) => {
   const [copied, setCopied] = useState(false);
   const [showRawText, setShowRawText] = useState(false);
+  const [currentDate, setCurrentDate] = useState<string>("");
+
+  // Set the current date on client-side to avoid hydration mismatch
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString());
+  }, []);
 
   // SAFETY CHECK: If email is a JSON string, extract the actual email content
   let processedEmail = email;
@@ -463,7 +469,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
                         <span>[Recipient Email]</span>
                       </div>
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-500">{new Date().toLocaleDateString()}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-500">{currentDate}</div>
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white leading-tight">{subject}</h2>

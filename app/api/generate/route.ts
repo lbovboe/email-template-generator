@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function generateWithOpenAI(prompt: string, model?: string): Promise<string> {
+  console.log("🚀 ~ generateWithOpenAI ~ prompt:", prompt)
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -51,15 +52,33 @@ async function generateWithOpenAI(prompt: string, model?: string): Promise<strin
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: model || "gpt-3.5-turbo",
+      // GPT-4.1 Nano: Fastest and cheapest model in GPT-4.1 series
+      // Optimized for low-latency tasks like email generation
+      // 1M context window, 32K max output, $0.10/M input + $0.40/M output
+      model: "gpt-4.1-nano",
+
+      // OpenAI Chat Completions API - Message Roles:
+      // "system" - Sets AI behavior/personality/instructions (optional)
+      //           Example: "You are a professional email writer..."
+      // "user"   - Human input/requests (what user wants AI to do)
+      //           Example: "Write a follow-up email about our meeting"
+      // "assistant" - AI's previous responses (for multi-turn conversations)
+      //              Example: Used to maintain conversation context
+      //
+      // Current implementation uses single-turn with "user" role only
+      // since our prompt already contains complete instructions + data
       messages: [
         {
           role: "user",
           content: prompt,
         },
       ],
-      max_tokens: 1000,
-      temperature: 0.7,
+      // Increased from 1000 to leverage GPT-4.1 nano's 32K output capability
+      max_tokens: 4000,
+      // Slightly lower temperature for more consistent email generation
+      temperature: 0.6,
+      // n: 1 (default) - Only generate 1 response choice for optimal token usage
+      // Setting n > 1 would multiply output token costs by n
     }),
   });
 
@@ -68,6 +87,29 @@ async function generateWithOpenAI(prompt: string, model?: string): Promise<strin
   }
 
   const data = await response.json();
+  console.log("🚀 ~ generateWithOpenAI ~ data:", data)
+
+  // OpenAI API Response Structure:
+  // {
+  //   "choices": [                    // Array of possible responses
+  //     {
+  //       "index": 0,                 // Position in array (usually 0)
+  //       "message": {
+  //         "role": "assistant",      // AI's response role
+  //         "content": "Generated text here..."  // The actual AI response
+  //       },
+  //       "finish_reason": "stop"     // Why generation ended
+  //     }
+  //   ],
+  //   "usage": { ... },              // Token usage info
+  //   "id": "chatcmpl-...",         // Request ID
+  //   "model": "gpt-4.1-nano"       // Model used
+  // }
+  //
+  // We access choices[0] because:
+  // - OpenAI can generate multiple responses (n parameter)
+  // - We only request 1 response, so it's always at index [0]
+  // - ?. is optional chaining for safety (prevents crashes if missing)
   return data.choices[0]?.message?.content || "Failed to generate email content.";
 }
 
@@ -80,8 +122,10 @@ async function generateWithAnthropic(prompt: string, model?: string): Promise<st
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: model || "claude-3-sonnet-20240229",
-      max_tokens: 1000,
+      // Updated to latest Claude model for better performance
+      model: model || "claude-3-5-sonnet-20241022",
+      // Increased max_tokens to match GPT-4.1 nano capabilities
+      max_tokens: 4000,
       messages: [
         {
           role: "user",

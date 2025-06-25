@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -8,7 +8,8 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
 
 export const Textarea: React.FC<TextareaProps> = ({ label, error, helperText, className, id, ...props }) => {
-  const textareaId = id || `textarea-${Math.random().toString(36).substring(2, 9)}`;
+  const generatedId = useId();
+  const textareaId = id || generatedId;
 
   const baseClasses =
     "w-full px-4 py-3 rounded-xl border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed resize-y min-h-[100px]";
