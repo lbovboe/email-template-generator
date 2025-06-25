@@ -230,7 +230,7 @@ export default function HomePage() {
             <Button
               variant="secondary"
               size="xl"
-              className="text-lg bg-white text-purple-600 hover:bg-gray-100"
+              className="text-lg bg-white text-white hover:bg-gray-100"
             >
               Get Started for Free
               <svg
