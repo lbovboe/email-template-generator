@@ -356,7 +356,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
       </div>
 
       {/* Usage Warning */}
-      <div className="bg-amber-50/90 dark:bg-amber-900/20 backdrop-blur-sm border border-amber-200 dark:border-amber-800 rounded-2xl shadow-lg">
+      {/* <div className="bg-amber-50/90 dark:bg-amber-900/20 backdrop-blur-sm border border-amber-200 dark:border-amber-800 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0">
@@ -390,7 +390,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Email Display */}
       <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-xl overflow-hidden">

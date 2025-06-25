@@ -103,7 +103,6 @@ Write an email to {recipient} following all the above specifications precisely. 
     category: "sales",
     description:
       "Flexible cold outreach template for B2B and B2C scenarios - customers, partners, investors, and professional contacts",
-    featured: true,
     tags: ["sales", "networking", "outreach", "partnership", "investment", "B2B", "B2C"],
     systemPrompt: `You are an expert in cold outreach communications. Write a compelling outreach email tailored for {outreachType} outreach that:
 
@@ -430,8 +429,10 @@ Write a job application email that stands out and showcases the candidate effect
     name: "Event Invitation",
     category: "personal",
     description: "Professional or personal event invitation template",
+    featured: true,
     tags: ["event", "invitation", "meeting"],
     systemPrompt: `You are an event organizer writing an engaging invitation email. Create an email that:
+- Address the email to {recipientName} with appropriate greeting (if it's a group, address accordingly)
 - Has an exciting subject line for the {eventType}: {eventName}
 - Clearly states the event details: date {eventDate}, time {eventTime}, location {eventLocation}
 - Explains the purpose/benefit: {eventPurpose}
@@ -439,13 +440,23 @@ Write a job application email that stands out and showcases the candidate effect
 - Includes clear RSVP instructions: {rsvpInstructions}
 - Mentions any special requirements: {specialRequirements}
 - Creates excitement and anticipation for the event
+- End with proper signature using the host's name: {hostName}
 
 Host: {hostName}
+Recipient: {recipientName}
 Event: {eventName}
 Type: {eventType}
 
 Write an invitation that motivates people to attend and provides all necessary details.`,
     variables: [
+      {
+        name: "recipientName",
+        label: "Recipient",
+        type: "text",
+        required: true,
+        placeholder: "John Smith, Team, Everyone, Marketing Team",
+        description: "Who is this invitation for? Can be a person's name, team name, or group",
+      },
       {
         name: "hostName",
         label: "Host Name",
