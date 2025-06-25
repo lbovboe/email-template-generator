@@ -57,7 +57,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
         hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-400/10
         hover:-translate-y-2 hover:scale-[1.02]
         transition-all duration-300 ease-out
-        animate-fade-in overflow-hidden
+        animate-fade-in overflow-hidden  flex flex-col
         ${
           featured
             ? "ring-2 ring-purple-500/30 bg-gradient-to-br from-purple-50/50 to-blue-50/50 dark:from-purple-900/20 dark:to-blue-900/20"
@@ -70,7 +70,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
     >
       {/* Featured Badge */}
       {featured && (
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-1 right-1 z-10">
           <div className="flex items-center px-3 py-1.5 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-semibold rounded-full shadow-lg">
             <span className="mr-1.5">⭐</span>
             Featured
@@ -79,13 +79,13 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
       )}
 
       {/* Header with Icon and Title */}
-      <div className="flex items-start space-x-4 mb-4">
+      <div className={`flex items-start space-x-4 mb-4 flex-1  ${featured ? "mt-2" : ""}`}>
         <div className="flex-shrink-0">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center text-2xl shadow-inner">
             {getCategoryIcon(template.category)}
           </div>
         </div>
-        <div className="flex-1 min-w-0">
+        <div className=" min-w-0">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-200">
             {template.name}
           </h3>
@@ -96,7 +96,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
       </div>
 
       {/* Category Badge and Field Count */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 ">
         <span
           className={`
           px-3 py-1.5 text-xs font-semibold rounded-lg capitalize border
