@@ -16,7 +16,7 @@ export const emailExamples: EmailExample[] = [
     templateId: "professional-business",
     title: "Meeting Request",
     preview:
-      "Hi Sarah, I hope this email finds you well. I wanted to reach out to schedule a meeting to discuss our upcoming quarterly review...",
+      "Hi Sarah, I hope this email finds you well. I wanted to reach out to schedule a meeting to discuss our upcoming quarterly review..",
     category: "Business",
     useCase: "Scheduling professional meetings",
     tone: "Professional",
