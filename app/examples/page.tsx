@@ -245,39 +245,6 @@ export default function ExamplesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Header */}
-      <div className="border-b border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container-responsive py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Email Examples</h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-2">See what our AI can create for you</p>
-            </div>
-            <Link href="/">
-              <Button
-                variant="secondary"
-                size="sm"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                Back to Home
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* Hero Section */}
       <section className="py-16 text-center">
         <div className="container-responsive">
@@ -394,7 +361,7 @@ export default function ExamplesPage() {
             <Button
               variant="secondary"
               size="xl"
-              className="text-lg bg-white text-purple-600 hover:bg-gray-100"
+              className="text-lg bg-white text-white hover:bg-gray-100"
             >
               Start Generating Now
               <svg

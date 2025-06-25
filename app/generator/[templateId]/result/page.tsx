@@ -30,6 +30,14 @@ export default function ResultPage() {
       return;
     }
 
+    // DEBUG: Log what we retrieved from session storage
+    console.log("=== Result Page Debug ===");
+    console.log("Session data retrieved:", sessionData);
+    console.log("Generated email content:", sessionData.generatedEmail);
+    console.log("Email content length:", sessionData.generatedEmail?.length || 0);
+    console.log("Email content preview:", sessionData.generatedEmail?.substring(0, 200) || "No content");
+    console.log("Raw email content (showing newlines):", JSON.stringify(sessionData.generatedEmail));
+
     setTemplate(foundTemplate);
     setGeneratedEmail(sessionData.generatedEmail);
   }, [templateId, router]);

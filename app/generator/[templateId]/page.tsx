@@ -51,10 +51,39 @@ export default function FormPage() {
         throw new Error("Failed to generate email");
       }
 
-      const result = await response.text();
+      const result = await response.json();
+
+      // Extract the email content from the JSON response
+      let generatedEmail = result.email || "Failed to generate email content.";
+
+      // SAFETY CHECK: If the result is still a JSON string, parse it again
+      if (typeof generatedEmail === "string" && generatedEmail.startsWith("{") && generatedEmail.includes('"email"')) {
+        try {
+          const parsedAgain = JSON.parse(generatedEmail);
+          generatedEmail = parsedAgain.email || generatedEmail;
+          console.log("WARNING: Had to parse email content twice, fixed:", generatedEmail.substring(0, 100));
+        } catch (e) {
+          console.log("Email content appears to be a JSON string but couldn't parse:", e);
+        }
+      }
+
+      // DEBUG: Log the API response and parsed content
+      console.log("=== API Response Debug ===");
+      console.log("Full API response:", result);
+      console.log("Extracted email content:", generatedEmail);
+      console.log("Email content length:", generatedEmail.length);
+      console.log("Email content preview (first 200 chars):", generatedEmail.substring(0, 200));
+      console.log("Raw email content (showing newlines):", JSON.stringify(generatedEmail));
 
       // Save generated email to session storage
-      sessionStore.save(templateId, { generatedEmail: result });
+      sessionStore.save(templateId, { generatedEmail: generatedEmail });
+
+      // DEBUG: Verify what was saved to session storage
+      const savedData = sessionStore.get(templateId);
+      console.log("=== Session Storage Debug ===");
+      console.log("Data saved to session:", savedData);
+      console.log("Retrieved email from session:", savedData.generatedEmail);
+      console.log("Session email matches original:", savedData.generatedEmail === generatedEmail);
 
       // Navigate to result page
       router.push(`/generator/${templateId}/result`);

@@ -13,6 +13,14 @@ export const sessionStore = {
     const existing = sessionStore.get(templateId);
     const updated = { ...existing, ...data, templateId };
 
+    // DEBUG: Log what we're trying to save
+    if (data.generatedEmail) {
+      console.log("=== Session Storage Save Debug ===");
+      console.log("Saving email content length:", data.generatedEmail.length);
+      console.log("Email content preview:", data.generatedEmail.substring(0, 100));
+      console.log("Is JSON string?", data.generatedEmail.startsWith("{") && data.generatedEmail.includes('"email"'));
+    }
+
     try {
       window.sessionStorage.setItem(`${SESSION_KEY}-${templateId}`, JSON.stringify(updated));
     } catch (error) {
@@ -25,7 +33,20 @@ export const sessionStore = {
 
     try {
       const data = window.sessionStorage.getItem(`${SESSION_KEY}-${templateId}`);
-      return data ? JSON.parse(data) : {};
+      const parsed = data ? JSON.parse(data) : {};
+
+      // DEBUG: Log what we retrieved
+      if (parsed.generatedEmail) {
+        console.log("=== Session Storage Get Debug ===");
+        console.log("Retrieved email content length:", parsed.generatedEmail.length);
+        console.log("Email content preview:", parsed.generatedEmail.substring(0, 100));
+        console.log(
+          "Is JSON string?",
+          parsed.generatedEmail.startsWith("{") && parsed.generatedEmail.includes('"email"')
+        );
+      }
+
+      return parsed;
     } catch (error) {
       console.error("Failed to read from session storage:", error);
       return {};
