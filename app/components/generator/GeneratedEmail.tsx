@@ -301,6 +301,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
       </div>
 
       {/* Tips */}
+      <div className="bg-blue-50/80 dark:bg-blue-900/20 backdrop-blur-sm border border-blue-200 dark:border-blue-800 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-start space-x-3">
             <div className="text-2xl">💡</div>
