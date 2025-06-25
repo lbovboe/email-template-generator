@@ -101,45 +101,69 @@ Write an email to {recipient} following all the above specifications precisely. 
     id: "cold-outreach",
     name: "Cold Outreach Email",
     category: "sales",
-    description: "Professional cold outreach template for sales and networking",
+    description: "Professional cold outreach template for customers, partners, investors, and professional contacts",
     featured: true,
-    tags: ["sales", "networking", "outreach"],
-    systemPrompt: `You are a sales and networking expert. Write a compelling cold outreach email that:
-- Opens with a personalized hook related to {companyName} or {recipientRole}
-- Clearly states the value proposition: {valueProposition}
-- Keeps the tone {tone} and professional
-- Includes a clear, specific call-to-action: {callToAction}
-- Is concise and respects the recipient's time
-- Shows genuine interest in {recipientInterest}
-- Mentions {connectionPoint} as a conversation starter
+    tags: ["sales", "networking", "outreach", "partnership", "investment"],
+    systemPrompt: `You are an expert in cold outreach communications. Write a compelling outreach email tailored for {outreachType} outreach that:
 
+OUTREACH TYPE GUIDELINES:
+- For CUSTOMERS: Focus on solving their specific pain points and demonstrating clear ROI
+- For PARTNERS: Emphasize mutual benefits and strategic collaboration opportunities  
+- For INVESTORS: Highlight growth metrics, market opportunity, and return potential
+- For PROFESSIONAL CONTACTS: Build relationships and explore networking opportunities
+
+EMAIL STRUCTURE:
+- Open with a personalized hook mentioning {connectionPoint} related to {recipientName} who is {recipientRole} at {companyName}
+- Establish credibility early using: {credibilityBuilder}
+- Present value proposition tailored to {outreachType}: {valueProposition}
+- Show understanding of their {industryContext} and {recipientInterest}
+- Use {tone} tone while maintaining professionalism
+- Include specific, clear call-to-action: {callToAction}
+- Keep concise and respectful of their time
+- End with appropriate signature using {senderName} from {senderCompany}
+
+CONTEXT:
 Sender: {senderName}
-Company: {senderCompany}
-Recipient: {recipientName} at {companyName}
+Company: {senderCompany}  
+Recipient: {recipientName}
+Recipient Role: {recipientRole}
+Recipient Company: {companyName}
+Outreach Purpose: {outreachType}
+Industry Context: {industryContext}
 
-Write a cold outreach email that feels personal and valuable, not salesy.`,
+Write a {outreachType} outreach email that feels personal, valuable, and appropriate for someone who doesn't know you yet.`,
     variables: [
+      {
+        name: "outreachType",
+        label: "Outreach Type",
+        type: "select",
+        required: true,
+        options: ["Customer", "Partner", "Investor", "Professional Contact"],
+        description: "What type of relationship are you seeking to establish?",
+      },
       {
         name: "recipientName",
         label: "Recipient Name",
         type: "text",
         required: true,
         placeholder: "Sarah Johnson",
+        description: "The full name of the person you're contacting",
       },
       {
         name: "recipientRole",
         label: "Recipient Role",
         type: "text",
         required: true,
-        placeholder: "Marketing Director",
+        placeholder: "VP of Marketing",
+        description: "Their job title or position",
       },
       {
         name: "companyName",
         label: "Their Company",
         type: "text",
-        required: false,
+        required: true,
         placeholder: "TechCorp Inc.",
-        description: "Optional - leave blank if unknown or not applicable",
+        description: "The company they work for",
       },
       {
         name: "senderName",
@@ -147,6 +171,7 @@ Write a cold outreach email that feels personal and valuable, not salesy.`,
         type: "text",
         required: true,
         placeholder: "Alex Chen",
+        description: "Your full name",
       },
       {
         name: "senderCompany",
@@ -154,30 +179,52 @@ Write a cold outreach email that feels personal and valuable, not salesy.`,
         type: "text",
         required: true,
         placeholder: "DataSolutions Pro",
+        description: "Your company name",
+      },
+      {
+        name: "industryContext",
+        label: "Industry Context",
+        type: "text",
+        required: true,
+        placeholder: "B2B SaaS marketing technology",
+        description: "Their industry or business sector",
       },
       {
         name: "valueProposition",
         label: "Value Proposition",
         type: "textarea",
         required: true,
-        placeholder: "We help marketing teams increase lead generation by 40% through automated data analysis...",
-        description: "What specific value can you provide to them?",
+        placeholder:
+          "We help marketing teams increase qualified leads by 40% through AI-powered data analysis and automation...",
+        description: "What specific value can you provide? Tailor this to your outreach type.",
+        validation: {
+          minLength: 20,
+          maxLength: 800,
+        },
+      },
+      {
+        name: "credibilityBuilder",
+        label: "Credibility Builder",
+        type: "text",
+        required: true,
+        placeholder: "We've helped 50+ SaaS companies like Stripe and Zoom scale their marketing",
+        description: "Notable clients, achievements, or credentials that establish trust",
       },
       {
         name: "connectionPoint",
         label: "Connection Point",
         type: "text",
-        required: false,
-        placeholder: "I noticed your recent article about marketing automation trends...",
-        description: "Something specific about them or their company that caught your attention",
+        required: true,
+        placeholder: "I noticed your recent LinkedIn post about marketing attribution challenges",
+        description: "Something specific about them/their company that caught your attention",
       },
       {
         name: "recipientInterest",
         label: "Their Interests/Challenges",
         type: "text",
         required: false,
-        placeholder: "improving lead quality and conversion rates",
-        description: "What challenges or interests might they have?",
+        placeholder: "improving lead quality and attribution tracking",
+        description: "What challenges or interests might they have relevant to your outreach?",
       },
       {
         name: "callToAction",
@@ -186,19 +233,23 @@ Write a cold outreach email that feels personal and valuable, not salesy.`,
         required: true,
         options: [
           "Schedule a 15-minute call",
-          "Meet for coffee",
-          "Quick demo",
-          "Send more information",
+          "Brief 20-minute demo",
+          "Coffee meeting",
+          "Send detailed proposal",
           "Connect on LinkedIn",
-          "Reply with questions",
+          "Share case study",
+          "Quick product tour",
+          "Exploratory conversation",
         ],
+        description: "What specific next step do you want them to take?",
       },
       {
         name: "tone",
         label: "Tone",
         type: "select",
         required: true,
-        options: ["Professional", "Casual", "Enthusiastic", "Consultative", "Direct"],
+        options: ["Professional", "Consultative", "Enthusiastic", "Direct", "Friendly", "Executive"],
+        description: "The communication style that fits your relationship and outreach type",
       },
     ],
   },

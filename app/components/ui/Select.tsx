@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo, useId, useCallback } from "react";
+import React, { useState, useRef, useEffect, useId, useCallback } from "react";
 
 interface SelectOption {
   value: string;
@@ -33,32 +33,20 @@ export const Select: React.FC<SelectProps> = ({
   id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const generatedId = useId();
   const selectId = id || generatedId;
   const dropdownId = `${selectId}-dropdown`;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const optionsRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((option) => option.value === value);
-
-  const filteredOptions = useMemo(() => {
-    if (!searchQuery) return options;
-    return options.filter(
-      (option) =>
-        option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        option.value.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [options, searchQuery]);
 
   const handleOptionSelect = useCallback(
     (option: SelectOption) => {
       onChange?.({ target: { value: option.value } });
       setIsOpen(false);
-      setSearchQuery("");
       setHighlightedIndex(-1);
     },
     [onChange]
@@ -69,7 +57,6 @@ export const Select: React.FC<SelectProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
-        setSearchQuery("");
         setHighlightedIndex(-1);
       }
     };
@@ -86,21 +73,20 @@ export const Select: React.FC<SelectProps> = ({
       switch (event.key) {
         case "Escape":
           setIsOpen(false);
-          setSearchQuery("");
           setHighlightedIndex(-1);
           break;
         case "ArrowDown":
           event.preventDefault();
-          setHighlightedIndex((prev) => (prev < filteredOptions.length - 1 ? prev + 1 : 0));
+          setHighlightedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
           break;
         case "ArrowUp":
           event.preventDefault();
-          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : filteredOptions.length - 1));
+          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
           break;
         case "Enter":
           event.preventDefault();
-          if (highlightedIndex >= 0 && filteredOptions[highlightedIndex]) {
-            handleOptionSelect(filteredOptions[highlightedIndex]);
+          if (highlightedIndex >= 0 && options[highlightedIndex]) {
+            handleOptionSelect(options[highlightedIndex]);
           }
           break;
       }
@@ -108,16 +94,7 @@ export const Select: React.FC<SelectProps> = ({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, highlightedIndex, filteredOptions, handleOptionSelect]);
-
-  // Focus search input when dropdown opens
-  useEffect(() => {
-    if (isOpen && searchInputRef.current) {
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    }
-  }, [isOpen]);
+  }, [isOpen, highlightedIndex, options, handleOptionSelect]);
 
   // Scroll highlighted option into view
   useEffect(() => {
@@ -132,7 +109,6 @@ export const Select: React.FC<SelectProps> = ({
   const handleTriggerClick = () => {
     if (!disabled) {
       setIsOpen(!isOpen);
-      setSearchQuery("");
       setHighlightedIndex(-1);
     }
   };
@@ -202,38 +178,8 @@ export const Select: React.FC<SelectProps> = ({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-2 animate-fade-in">
+        <div className="absolute z-[9999] w-full mt-2 animate-fade-in">
           <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden">
-            {/* Search Input */}
-            <div className="p-3 border-b border-gray-200/50 dark:border-gray-700/50">
-              <div className="relative">
-                <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setHighlightedIndex(-1);
-                  }}
-                  placeholder="Search options..."
-                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm transition-all duration-200"
-                />
-              </div>
-            </div>
-
             {/* Options List */}
             <div
               ref={optionsRef}
@@ -241,14 +187,13 @@ export const Select: React.FC<SelectProps> = ({
               className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600"
               role="listbox"
             >
-              {filteredOptions.length === 0 ? (
+              {options.length === 0 ? (
                 <div className="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
-                  <div className="text-2xl mb-2">🔍</div>
-                  <p className="text-sm">No options found</p>
-                  {searchQuery && <p className="text-xs mt-1">Try adjusting your search</p>}
+                  <div className="text-2xl mb-2">📋</div>
+                  <p className="text-sm">No options available</p>
                 </div>
               ) : (
-                filteredOptions.map((option, index) => (
+                options.map((option, index) => (
                   <div
                     key={option.value}
                     className={`

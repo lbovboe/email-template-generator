@@ -18,11 +18,23 @@ export async function POST(request: NextRequest) {
     // Replace variables in the system prompt
     let processedPrompt = template.systemPrompt;
 
+    console.log("🚀 ~ POST ~ variables:", variables);
     // Replace all variables in the prompt
     Object.entries(variables).forEach(([key, value]) => {
-      const placeholder = `{${key}}`;
-      processedPrompt = processedPrompt.replace(new RegExp(placeholder, "g"), value || "");
+      // Properly escape curly braces for regex pattern
+      const placeholder = `\\{${key}\\}`;
+      // If value is empty/null/undefined, remove the entire placeholder including braces
+      // If value exists, replace placeholder with the actual value
+      if (value && value.trim() !== "") {
+        processedPrompt = processedPrompt.replace(new RegExp(placeholder, "g"), value);
+      } else {
+        // Remove the entire placeholder when value is empty
+        processedPrompt = processedPrompt.replace(new RegExp(placeholder, "g"), "");
+      }
     });
+
+    // Remove any remaining placeholders that don't have corresponding variables
+    processedPrompt = processedPrompt.replace(/\{[^}]+\}/g, "");
 
     // Generate email based on provider
     let generatedEmail: string;
@@ -143,6 +155,79 @@ async function generateWithAnthropic(prompt: string, model?: string): Promise<st
   return data.content[0]?.text || "Failed to generate email content.";
 }
 
+function generateColdOutreachDemo(variables: Record<string, string>): string {
+  const outreachType = variables.outreachType || "Customer";
+  const recipientName = variables.recipientName || "Name";
+  const senderName = variables.senderName || "Your Name";
+  const senderCompany = variables.senderCompany || "Your Company";
+  const companyName = variables.companyName || "Their Company";
+  const recipientRole = variables.recipientRole || "Their Role";
+  const connectionPoint = variables.connectionPoint || "I came across your profile";
+  const credibilityBuilder = variables.credibilityBuilder || "We have helped many companies";
+  const valueProposition = variables.valueProposition || "We offer innovative solutions";
+  const industryContext = variables.industryContext || "your industry";
+  const recipientInterest = variables.recipientInterest || "";
+  const callToAction = variables.callToAction || "Schedule a 15-minute call";
+
+  // Generate subject line based on outreach type
+  const subjectLines = {
+    Customer: `${valueProposition.split(".")[0]} - ${senderCompany}`,
+    Partner: `Partnership Opportunity - ${senderCompany} x ${companyName}`,
+    Investor: `Investment Opportunity - ${senderCompany}`,
+    "Professional Contact": `Introduction from ${senderName} - ${senderCompany}`,
+  };
+
+  // Generate opening based on outreach type
+  const openings = {
+    Customer: `Hi ${recipientName},\n\n${connectionPoint}. As the ${recipientRole} at ${companyName}, I thought you'd be interested in how ${credibilityBuilder.toLowerCase()}.`,
+    Partner: `Hi ${recipientName},\n\n${connectionPoint}. I believe there's a strong synergy between ${senderCompany} and ${companyName} that could benefit both our organizations.`,
+    Investor: `Hi ${recipientName},\n\n${connectionPoint}. Given your expertise in ${industryContext}, I wanted to share an exciting investment opportunity with ${senderCompany}.`,
+    "Professional Contact": `Hi ${recipientName},\n\n${connectionPoint}. I've been following your work in ${industryContext} and would love to connect and learn from your experience.`,
+  };
+
+  // Generate main content based on outreach type
+  const content = {
+    Customer: `${valueProposition}\n\n${credibilityBuilder}, and I believe we could deliver similar results for ${companyName}.${
+      recipientInterest ? ` Given your focus on ${recipientInterest}, this seems particularly relevant.` : ""
+    }`,
+    Partner: `${valueProposition}\n\nBased on ${credibilityBuilder}, I see great potential for a strategic partnership.${
+      recipientInterest
+        ? ` Particularly around ${recipientInterest}, where our capabilities complement each other.`
+        : ""
+    }`,
+    Investor: `${valueProposition}\n\nOur traction includes: ${credibilityBuilder}. The market opportunity in ${industryContext} is significant and growing rapidly.${
+      recipientInterest ? ` Your experience with ${recipientInterest} would be invaluable as we scale.` : ""
+    }`,
+    "Professional Contact": `I'm always eager to connect with thought leaders in ${industryContext}. ${credibilityBuilder}, and I'd love to share insights and learn from your experience.${
+      recipientInterest ? ` I'm particularly interested in your perspective on ${recipientInterest}.` : ""
+    }`,
+  };
+
+  // Generate call to action
+  const callToActionText = {
+    "Schedule a 15-minute call": "Would you be available for a brief 15-minute call next week?",
+    "Brief 20-minute demo": "I'd love to show you a quick 20-minute demo of how this works.",
+    "Coffee meeting": "Would you be interested in meeting for coffee to discuss this further?",
+    "Send detailed proposal": "I can send you a detailed proposal outlining the specifics.",
+    "Connect on LinkedIn": "I'd love to connect with you on LinkedIn to continue the conversation.",
+    "Share case study": "I can share a relevant case study that demonstrates the results we've achieved.",
+    "Quick product tour": "Would you like a quick product tour to see how this could work for you?",
+    "Exploratory conversation": "Would you be open to an exploratory conversation about potential opportunities?",
+  };
+
+  return `Subject: ${subjectLines[outreachType as keyof typeof subjectLines]}
+
+${openings[outreachType as keyof typeof openings]}
+
+${content[outreachType as keyof typeof content]}
+
+${callToActionText[callToAction as keyof typeof callToActionText] || "Would you be interested in learning more?"}
+
+Best regards,
+${senderName}
+${senderCompany}`;
+}
+
 function generateDemoEmail(template: EmailTemplate, variables: Record<string, string>): string {
   // Demo email generation for when API is not available
   const demoEmails = {
@@ -165,33 +250,7 @@ Thank you for your time and consideration. I look forward to your response.
 Best regards,
 ${variables.senderName || "Your Name"}`,
 
-    "cold-outreach": `Subject: ${variables.valueProposition ? "Potential Partnership Opportunity" : "Introduction"} - ${
-      variables.senderCompany || "Your Company"
-    }
-
-Hi ${variables.recipientName || "Name"},
-
-${variables.connectionPoint ? `${variables.connectionPoint}\n\n` : ""}I'm ${variables.senderName || "Your Name"} from ${
-      variables.senderCompany || "Your Company"
-    }. ${variables.valueProposition || "I wanted to reach out about a potential opportunity."} 
-
-${variables.recipientInterest ? `I believe this could help with ${variables.recipientInterest}.\n\n` : ""}${
-      variables.callToAction === "Schedule a 15-minute call"
-        ? "Would you be available for a brief 15-minute call next week?"
-        : variables.callToAction === "Meet for coffee"
-        ? "Would you be interested in meeting for coffee to discuss this further?"
-        : variables.callToAction === "Quick demo"
-        ? "I'd love to show you a quick demo of how this could work for your team."
-        : variables.callToAction === "Send more information"
-        ? "I can send you more detailed information if you're interested."
-        : variables.callToAction === "Connect on LinkedIn"
-        ? "I'd love to connect with you on LinkedIn to continue the conversation."
-        : `Would you be interested in ${variables.callToAction?.toLowerCase() || "learning more"}?`
-    }
-
-Best regards,
-${variables.senderName || "Your Name"}
-${variables.senderCompany || "Your Company"}`,
+    "cold-outreach": generateColdOutreachDemo(variables),
 
     "customer-support": `Subject: Re: ${variables.issueType || "Support Request"} - Resolution Update
 
