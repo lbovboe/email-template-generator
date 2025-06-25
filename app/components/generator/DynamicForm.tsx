@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
@@ -18,6 +18,11 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
 
+  // Custom dropdown state
+  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+  const [focusedOptions, setFocusedOptions] = useState<Record<string, number>>({});
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   // Load saved form data on component mount
   useEffect(() => {
     const sessionData = sessionStore.get(template.id);
@@ -25,6 +30,100 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       setFormData(sessionData.formData);
     }
   }, [template.id]);
+
+  // Handle click outside to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      let shouldClose = true;
+
+      Object.entries(dropdownRefs.current).forEach(([fieldName, ref]) => {
+        if (ref && ref.contains(target)) {
+          shouldClose = false;
+        }
+      });
+
+      if (shouldClose) {
+        setOpenDropdowns({});
+        setFocusedOptions({});
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Dropdown helper functions
+  const toggleDropdown = (fieldName: string) => {
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [fieldName]: !prev[fieldName],
+    }));
+    setFocusedOptions((prev) => ({
+      ...prev,
+      [fieldName]: -1,
+    }));
+  };
+
+  const selectOption = (fieldName: string, value: string, variable: EmailVariable) => {
+    handleFieldChange(variable, value);
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [fieldName]: false,
+    }));
+    setFocusedOptions((prev) => ({
+      ...prev,
+      [fieldName]: -1,
+    }));
+  };
+
+  const handleDropdownKeyDown = (
+    e: React.KeyboardEvent,
+    fieldName: string,
+    variable: EmailVariable,
+    options: string[]
+  ) => {
+    const isOpen = openDropdowns[fieldName];
+    const focusedIndex = focusedOptions[fieldName] || -1;
+
+    switch (e.key) {
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        if (!isOpen) {
+          toggleDropdown(fieldName);
+        } else if (focusedIndex >= 0 && focusedIndex < options.length) {
+          selectOption(fieldName, options[focusedIndex], variable);
+        }
+        break;
+      case "Escape":
+        setOpenDropdowns((prev) => ({ ...prev, [fieldName]: false }));
+        setFocusedOptions((prev) => ({ ...prev, [fieldName]: -1 }));
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        if (!isOpen) {
+          toggleDropdown(fieldName);
+        } else {
+          setFocusedOptions((prev) => ({
+            ...prev,
+            [fieldName]: Math.min(focusedIndex + 1, options.length - 1),
+          }));
+        }
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        if (isOpen) {
+          setFocusedOptions((prev) => ({
+            ...prev,
+            [fieldName]: Math.max(focusedIndex - 1, 0),
+          }));
+        }
+        break;
+    }
+  };
 
   const validateField = (variable: EmailVariable, value: string): string | null => {
     if (variable.required && (!value || (typeof value === "string" && value.trim() === ""))) {
@@ -143,10 +242,19 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
 
       case "select":
         const selectId = `select-${variable.name}`;
+        const isDropdownOpen = openDropdowns[variable.name] || false;
+        const focusedIndex = focusedOptions[variable.name] || -1;
+        const options = variable.options || [];
+        const selectedOption = options.find((opt) => opt === value);
+        const displayValue = selectedOption || variable.placeholder || `Select ${variable.label.toLowerCase()}`;
+
         return (
           <div
             key={variable.name}
             className="relative w-full"
+            ref={(el) => {
+              dropdownRefs.current[variable.name] = el;
+            }}
           >
             {commonProps.label && (
               <label
@@ -156,15 +264,22 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
                 {commonProps.label}
               </label>
             )}
-            <select
+
+            {/* Custom Dropdown Trigger */}
+            <div
               id={selectId}
-              value={value}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleFieldChange(variable, e.target.value)}
+              role="combobox"
+              aria-expanded={isDropdownOpen}
+              aria-haspopup="listbox"
+              aria-label={commonProps.label}
+              tabIndex={0}
+              onClick={() => toggleDropdown(variable.name)}
+              onKeyDown={(e) => handleDropdownKeyDown(e, variable.name, variable, options)}
               onBlur={commonProps.onBlur}
               className={`
-                w-full px-4 py-3 rounded-xl border transition-all duration-300 
+                relative w-full px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer
                 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent 
-                bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm
+                bg-white/70 dark:bg-gray-800/70 
                 hover:bg-white/80 dark:hover:bg-gray-800/80
                 ${
                   commonProps.error
@@ -172,23 +287,77 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
                     : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                 }
                 text-gray-900 dark:text-white
+                ${isDropdownOpen ? "ring-2 ring-purple-500/50 border-transparent" : ""}
               `.trim()}
             >
-              <option
-                value=""
-                disabled
-              >
-                {variable.placeholder || `Select ${variable.label.toLowerCase()}`}
-              </option>
-              {(variable.options || []).map((opt) => (
-                <option
-                  key={opt}
-                  value={opt}
+              <div className="flex items-center justify-between">
+                <span className={`block truncate ${!selectedOption ? "text-gray-500 dark:text-gray-400" : ""}`}>
+                  {displayValue}
+                </span>
+                <svg
+                  className={`w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform duration-200 ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {opt}
-                </option>
-              ))}
-            </select>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Custom Dropdown Menu */}
+            {isDropdownOpen && (
+              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white/95 dark:bg-gray-800/95  border border-gray-200/50 dark:border-gray-700/50 rounded-xl shadow-xl max-h-60 overflow-auto">
+                {options.map((option, index) => (
+                  <div
+                    key={option}
+                    role="option"
+                    aria-selected={option === value}
+                    onClick={() => selectOption(variable.name, option, variable)}
+                    className={`
+                      px-4 py-3 cursor-pointer transition-all duration-150
+                      hover:bg-purple-50 dark:hover:bg-purple-900/30
+                      ${
+                        option === value
+                          ? "bg-purple-100 dark:bg-purple-900/50 text-purple-900 dark:text-purple-100 font-medium"
+                          : "text-gray-900 dark:text-white"
+                      }
+                      ${index === focusedIndex ? "bg-purple-50 dark:bg-purple-900/20" : ""}
+                      ${index === 0 ? "rounded-t-xl" : ""}
+                      ${index === options.length - 1 ? "rounded-b-xl" : ""}
+                    `.trim()}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="block truncate">{option}</span>
+                      {option === value && (
+                        <svg
+                          className="w-4 h-4 text-purple-600 dark:text-purple-400 ml-2"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {options.length === 0 && (
+                  <div className="px-4 py-3 text-gray-500 dark:text-gray-400 text-center">No options available</div>
+                )}
+              </div>
+            )}
+
             {commonProps.error && (
               <p className="form-error mt-2 text-sm text-red-600 dark:text-red-400">{commonProps.error}</p>
             )}
@@ -257,7 +426,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       className="space-y-6"
     >
       {/* Progress Indicator */}
-      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+      <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Form Progress</h3>
@@ -275,7 +444,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       </div>
 
       {/* Form Fields */}
-      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+      <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
         <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Email Details</h3>
           <p className="text-gray-600 dark:text-gray-300">
@@ -287,8 +456,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
             {template.variables.map((variable, index) => (
               <div
                 key={variable.name}
-                className="animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className=""
               >
                 <div className="flex items-start space-x-3">
                   <div className="text-2xl mt-2">{getFieldIcon(variable.type)}</div>
@@ -301,7 +469,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
       </div>
 
       {/* Action Buttons */}
-      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
+      <div className="bg-white/80 dark:bg-gray-900/80  border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
             <Button
@@ -312,6 +480,9 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
                 setFormData({});
                 setErrors({});
                 setTouchedFields(new Set());
+                setOpenDropdowns({});
+                setFocusedOptions({});
+                sessionStore.save(template.id, { formData: {} });
               }}
             >
               <svg
