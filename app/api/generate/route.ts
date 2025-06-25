@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function generateWithOpenAI(prompt: string, model?: string): Promise<string> {
-  console.log("🚀 ~ generateWithOpenAI ~ prompt:", prompt)
+  console.log("🚀 ~ generateWithOpenAI ~ prompt:", prompt);
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -55,7 +55,7 @@ async function generateWithOpenAI(prompt: string, model?: string): Promise<strin
       // GPT-4.1 Nano: Fastest and cheapest model in GPT-4.1 series
       // Optimized for low-latency tasks like email generation
       // 1M context window, 32K max output, $0.10/M input + $0.40/M output
-      model: "gpt-4.1-nano",
+      model: model || "gpt-4.1-nano",
 
       // OpenAI Chat Completions API - Message Roles:
       // "system" - Sets AI behavior/personality/instructions (optional)
@@ -87,7 +87,7 @@ async function generateWithOpenAI(prompt: string, model?: string): Promise<strin
   }
 
   const data = await response.json();
-  console.log("🚀 ~ generateWithOpenAI ~ data:", data)
+  console.log("🚀 ~ generateWithOpenAI ~ data:", data);
 
   // OpenAI API Response Structure:
   // {

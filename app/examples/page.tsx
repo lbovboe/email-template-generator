@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../components/ui/Button";
-import { emailExamples, getExamplesByCategory, categoryMap, EmailExample } from "../data/examples";
+import { getExamplesByCategory, categoryMap, EmailExample } from "../data/examples";
 
 const categories = [
   { id: "all", name: "All Examples", icon: "📧" },

@@ -274,13 +274,13 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
   return (
     <div className="space-y-6">
       {/* TEMPORARY DEBUG SECTION */}
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+      {/* <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
         <h4 className="font-bold text-red-800 dark:text-red-200 mb-2">🐛 DEBUG INFO (Remove this later)</h4>
         <div className="text-sm text-red-700 dark:text-red-300 space-y-1">
           <div>Email length: {processedEmail?.length || 0}</div>
           <div>Has content: {processedEmail && processedEmail.trim() !== "" ? "YES" : "NO"}</div>
           <div>Template: {template?.name || "No template"}</div>
-          <div>Subject: "{subject}"</div>
+          <div>Subject: &quot;{subject}&quot;</div>
           <div>Body length: {body?.length || 0}</div>
           <details className="mt-2">
             <summary className="cursor-pointer font-medium">Raw email content</summary>
@@ -296,10 +296,6 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
             </pre>
           </details>
         </div>
-      </div>
-
-      {/* Success Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800 rounded-2xl shadow-lg backdrop-blur-sm">
         <div className="p-6">
           <div className="flex items-center justify-center text-center">
             <div className="flex items-center space-x-3">
@@ -325,7 +321,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Email Statistics */}
       <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
