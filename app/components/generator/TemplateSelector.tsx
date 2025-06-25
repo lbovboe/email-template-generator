@@ -7,17 +7,19 @@ import { EmailTemplate } from "../../types/email";
 
 interface TemplateSelectorProps {
   templates: EmailTemplate[];
-  onSelectTemplate: (template: EmailTemplate) => void;
+  onSelect: (template: EmailTemplate) => void;
   selectedTemplateId?: string;
+  initialCategory?: string;
 }
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   templates,
-  onSelectTemplate,
+  onSelect,
   selectedTemplateId,
+  initialCategory = "all",
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   const categories = [
     { value: "all", label: "All Categories" },
@@ -101,7 +103,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
               <TemplateCard
                 key={template.id}
                 template={template}
-                onSelect={onSelectTemplate}
+                onSelect={onSelect}
                 featured={true}
                 index={index}
                 className={
@@ -124,7 +126,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
               <TemplateCard
                 key={template.id}
                 template={template}
-                onSelect={onSelectTemplate}
+                onSelect={onSelect}
                 index={index + featuredTemplates.length}
                 className={
                   selectedTemplateId === template.id

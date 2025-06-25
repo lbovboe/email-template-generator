@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/Button";
-import { emailExamples } from "../data/examples";
+import { emailExamples, EmailExample } from "../data/examples";
 
 const categories = [
   { name: "All", icon: "🌟" },
@@ -16,9 +16,9 @@ const categories = [
 
 export default function ExamplesPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
+  const [selectedEmail, setSelectedEmail] = useState<EmailExample | null>(null);
 
-  const handleUseTemplate = (example: any) => {
+  const handleUseTemplate = (example: EmailExample) => {
     // Find the corresponding template ID based on the example
     const templateMapping: { [key: string]: string } = {
       "Follow-up Email": "follow-up",
