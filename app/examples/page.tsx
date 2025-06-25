@@ -3,224 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../components/ui/Button";
-
-// Sample email examples for each category
-const emailExamples = {
-  business: [
-    {
-      id: 1,
-      title: "Meeting Request",
-      preview:
-        "Hi Sarah, I hope this email finds you well. I wanted to reach out to schedule a meeting to discuss our upcoming quarterly review...",
-      category: "Business",
-      useCase: "Scheduling professional meetings",
-      tone: "Professional",
-      fullEmail: `Subject: Meeting Request - Q4 Review Discussion
-
-Hi Sarah,
-
-I hope this email finds you well. I wanted to reach out to schedule a meeting to discuss our upcoming quarterly review and align on key priorities for the next quarter.
-
-Would you be available for a 45-minute meeting sometime next week? I'm flexible with timing and can accommodate your schedule. We could meet in person in the conference room or via video call, whichever works better for you.
-
-The main topics I'd like to cover include:
-• Q4 performance metrics and achievements
-• Budget planning for Q1 2024
-• Team resource allocation
-• Strategic initiatives timeline
-
-Please let me know your availability, and I'll send out a calendar invitation.
-
-Best regards,
-Alex Chen
-Project Manager
-alex.chen@company.com`,
-    },
-    {
-      id: 2,
-      title: "Project Update",
-      preview:
-        "I wanted to provide you with a quick update on the website redesign project. We've made significant progress over the past week...",
-      category: "Business",
-      useCase: "Status updates and progress reports",
-      tone: "Professional",
-      fullEmail: `Subject: Project Update - Website Redesign Progress
-
-Hi Team,
-
-I wanted to provide you with a quick update on the website redesign project. We've made significant progress over the past week and are on track to meet our deadline.
-
-Current Status:
-✅ User research and wireframes - Completed
-✅ Design mockups - Completed
-🔄 Frontend development - 70% complete
-⏳ Backend integration - Starting next week
-⏳ Testing phase - Scheduled for week of March 15th
-
-Key Achievements:
-• Successfully implemented the new navigation structure
-• Optimized page load times by 40%
-• Completed mobile responsive design for all main pages
-
-Next Steps:
-• Complete remaining frontend components
-• Begin API integration
-• Prepare for user acceptance testing
-
-If you have any questions or concerns, please don't hesitate to reach out.
-
-Best regards,
-Jessica Liu
-Lead Developer`,
-    },
-  ],
-  sales: [
-    {
-      id: 3,
-      title: "Cold Outreach",
-      preview:
-        "Hi Michael, I came across your recent LinkedIn post about scaling marketing operations at TechFlow, and it really resonated with me...",
-      category: "Sales",
-      useCase: "First contact with potential clients",
-      tone: "Professional & Personalized",
-      fullEmail: `Subject: Helping TechFlow Scale Marketing Operations
-
-Hi Michael,
-
-I came across your recent LinkedIn post about scaling marketing operations at TechFlow, and it really resonated with me. The challenges you mentioned around data integration and lead qualification are exactly what we help companies like yours solve.
-
-I'm Alex from DataSolutions Pro, and we've helped similar SaaS companies increase their lead generation by 40% while reducing manual work by 60%. For example, we recently worked with CloudBase (similar size to TechFlow) to automate their entire lead scoring process, which resulted in:
-
-• 45% increase in qualified leads
-• 30% reduction in sales cycle time
-• $2M additional revenue in 6 months
-
-I'd love to learn more about TechFlow's specific challenges and see if there's a way we could help. Would you be open to a brief 15-minute call next week? I can share some specific strategies that might be relevant to your situation.
-
-If now isn't the right time, I completely understand. Feel free to keep my contact info for future reference.
-
-Best regards,
-Alex Chen
-Senior Solutions Consultant
-DataSolutions Pro
-alex@datasolutionspro.com`,
-    },
-    {
-      id: 4,
-      title: "Follow-up Email",
-      preview:
-        "Thank you for taking the time to speak with me yesterday about TechFlow's marketing automation needs. As promised, I'm following up with...",
-      category: "Sales",
-      useCase: "Post-meeting follow-up",
-      tone: "Professional & Grateful",
-      fullEmail: `Subject: Follow-up: Marketing Automation Discussion + Next Steps
-
-Hi Michael,
-
-Thank you for taking the time to speak with me yesterday about TechFlow's marketing automation needs. As promised, I'm following up with the information we discussed and some next steps.
-
-Based on our conversation, here's what I understood about your priorities:
-• Streamlining lead qualification process
-• Integrating Salesforce with your marketing tools
-• Reducing manual data entry for your sales team
-• Improving lead-to-customer conversion rates
-
-I've attached a case study from CloudBase that shows exactly how we solved similar challenges. The results were impressive: 40% increase in qualified leads and 25% improvement in conversion rates within 3 months.
-
-Next Steps:
-1. I'll prepare a custom proposal based on your specific requirements
-2. Our technical team can do a brief assessment of your current setup
-3. We can schedule a demo showing the exact features you mentioned
-
-Would next Friday at 2 PM work for a 30-minute demo? I can show you the specific automation workflows that would save your team the most time.
-
-Thanks again for your time, and I look forward to continuing our conversation.
-
-Best regards,
-Alex Chen`,
-    },
-  ],
-  support: [
-    {
-      id: 5,
-      title: "Customer Issue Resolution",
-      preview:
-        "Thank you for contacting our support team regarding the login issues you've been experiencing. I understand how frustrating this must be...",
-      category: "Customer Support",
-      useCase: "Resolving customer technical issues",
-      tone: "Empathetic & Solution-focused",
-      fullEmail: `Subject: Login Issue Resolution - Account Restored
-
-Dear Jennifer,
-
-Thank you for contacting our support team regarding the login issues you've been experiencing. I understand how frustrating this must be, especially when you need to access your account for important work.
-
-I've investigated your account and found the root cause of the problem. It appears there was a temporary synchronization issue with our authentication server that affected a small number of accounts, including yours.
-
-Here's what I've done to resolve this:
-✅ Reset your account authentication tokens
-✅ Verified your account permissions are correct
-✅ Tested login functionality - everything is working properly now
-
-You should now be able to log in normally using your existing credentials. If you're still having trouble, please try these steps:
-1. Clear your browser cache and cookies
-2. Try logging in using an incognito/private browsing window
-3. If issues persist, try the "Forgot Password" option to reset your password
-
-I've also applied a one-month service credit to your account as an apology for the inconvenience. You'll see this reflected in your next billing cycle.
-
-Is there anything else I can help you with today? I'm here to ensure you have the best possible experience with our platform.
-
-Best regards,
-Marcus Johnson
-Senior Customer Success Specialist
-support@ourcompany.com
-Direct: (555) 123-4567`,
-    },
-  ],
-  personal: [
-    {
-      id: 6,
-      title: "Job Application",
-      preview:
-        "I am writing to express my strong interest in the Senior Software Engineer position at InnovateTech Solutions...",
-      category: "Career",
-      useCase: "Job applications and career opportunities",
-      tone: "Professional & Enthusiastic",
-      fullEmail: `Subject: Application for Senior Software Engineer Position
-
-Dear Hiring Manager,
-
-I am writing to express my strong interest in the Senior Software Engineer position at InnovateTech Solutions. With 5 years of experience developing scalable web applications and a passion for innovative technology solutions, I am excited about the opportunity to contribute to your team.
-
-In my current role at TechCorp, I have:
-• Led the development of a microservices architecture that improved system performance by 50%
-• Mentored junior developers and established coding best practices across the team
-• Successfully delivered 15+ client projects using React, Node.js, and AWS
-• Implemented automated testing strategies that reduced bug reports by 60%
-
-What particularly attracts me to InnovateTech Solutions is your commitment to sustainable technology and your recent expansion into AI-powered solutions. I've been following your company's growth and am impressed by the innovative approach you take to solving complex business challenges.
-
-My technical skills include:
-• Frontend: React, TypeScript, Next.js, Vue.js
-• Backend: Node.js, Python, Express, PostgreSQL
-• Cloud: AWS, Docker, Kubernetes
-• Tools: Git, Jest, Jenkins, Agile methodologies
-
-I am particularly excited about the opportunity to work on your new AI integration project mentioned in the job posting. My recent experience with machine learning APIs and data processing pipelines would be directly applicable to this initiative.
-
-I have attached my resume and portfolio for your review. I would welcome the opportunity to discuss how my experience and enthusiasm can contribute to InnovateTech Solutions' continued success.
-
-Thank you for your consideration. I look forward to hearing from you.
-
-Best regards,
-Emily Rodriguez
-emily.rodriguez@email.com
-(555) 987-6543
-Portfolio: emily-dev.com`,
-    },
-  ],
-};
+import { emailExamples, getExamplesByCategory, categoryMap, EmailExample } from "../data/examples";
 
 const categories = [
   { id: "all", name: "All Examples", icon: "📧" },
@@ -232,16 +15,22 @@ const categories = [
 
 export default function ExamplesPage() {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
+  const [selectedEmail, setSelectedEmail] = useState<EmailExample | null>(null);
 
-  const getFilteredExamples = () => {
-    if (activeCategory === "all") {
-      return Object.values(emailExamples).flat();
+  const filteredExamples = getExamplesByCategory(activeCategory);
+
+  const handleUseTemplate = (example: EmailExample) => {
+    // Get the category for the template ID to auto-select in generator
+    const templateCategory = categoryMap[example.category as keyof typeof categoryMap];
+
+    // Store the selected category in sessionStorage for auto-selection
+    if (templateCategory) {
+      sessionStorage.setItem("selectedCategory", templateCategory);
     }
-    return emailExamples[activeCategory as keyof typeof emailExamples] || [];
-  };
 
-  const filteredExamples = getFilteredExamples();
+    // Navigate to the specific template
+    window.location.href = `/generator/${example.templateId}`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
@@ -307,7 +96,14 @@ export default function ExamplesPage() {
                       {example.category}
                     </span>
                     <span className="text-2xl">
-                      {categories.find((c) => c.name === example.category)?.icon || "📧"}
+                      {categories.find((c) => c.name === example.category)?.icon ||
+                        (example.category === "Career"
+                          ? "👤"
+                          : example.category === "Professional Events"
+                          ? "🎉"
+                          : example.category === "Team Events"
+                          ? "🎯"
+                          : "📧")}
                     </span>
                   </div>
 
@@ -361,7 +157,7 @@ export default function ExamplesPage() {
             <Button
               variant="secondary"
               size="xl"
-              className="text-lg bg-white text-white hover:bg-gray-100"
+              className="text-lg bg-white text-purple-600 hover:bg-gray-100"
             >
               Start Generating Now
               <svg
@@ -430,24 +226,25 @@ export default function ExamplesPage() {
               </div>
 
               <div className="mt-6 flex gap-4">
-                <Link href="/generator">
-                  <Button className="flex-1">
-                    Generate Similar Email
-                    <svg
-                      className="w-4 h-4 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
-                  </Button>
-                </Link>
+                <Button
+                  className="flex-1"
+                  onClick={() => handleUseTemplate(selectedEmail)}
+                >
+                  Use This Template
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </Button>
                 <Button
                   variant="secondary"
                   onClick={() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TemplateSelector } from "../components/generator/TemplateSelector";
 import { emailTemplates } from "../data/templates";
@@ -9,6 +9,17 @@ import { sessionStore } from "../utils/sessionStorage";
 
 export default function GeneratorPage() {
   const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  useEffect(() => {
+    // Check if there's a pre-selected category from examples page
+    const storedCategory = sessionStorage.getItem("selectedCategory");
+    if (storedCategory) {
+      setSelectedCategory(storedCategory);
+      // Clear the stored category after using it
+      sessionStorage.removeItem("selectedCategory");
+    }
+  }, []);
 
   const handleTemplateSelect = (template: EmailTemplate) => {
     // Clear any existing session data for this template
@@ -60,6 +71,7 @@ export default function GeneratorPage() {
           <TemplateSelector
             templates={emailTemplates}
             onSelect={handleTemplateSelect}
+            initialCategory={selectedCategory}
           />
         </div>
       </div>

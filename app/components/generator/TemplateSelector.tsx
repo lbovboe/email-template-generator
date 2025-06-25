@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { TemplateCard } from "../ui/TemplateCard";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
@@ -10,11 +10,17 @@ import { EmailTemplate } from "../../types/email";
 interface TemplateSelectorProps {
   templates: EmailTemplate[];
   onSelect: (template: EmailTemplate) => void;
+  initialCategory?: string;
 }
 
-export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, onSelect }) => {
+export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, onSelect, initialCategory = "all" }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+  useEffect(() => {
+    // Update selected category if initialCategory changes
+    setSelectedCategory(initialCategory);
+  }, [initialCategory]);
 
   const categories = useMemo(() => {
     const cats = Array.from(new Set(templates.map((t) => t.category)));

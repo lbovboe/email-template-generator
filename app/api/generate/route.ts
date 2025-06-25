@@ -102,22 +102,26 @@ async function generateWithAnthropic(prompt: string, model?: string): Promise<st
 function generateDemoEmail(template: EmailTemplate, variables: Record<string, string>): string {
   // Demo email generation for when API is not available
   const demoEmails = {
-    "professional-business": `Subject: ${variables.emailType || "Business Matter"} - ${
-      variables.purpose || "Discussion"
+    "professional-business": `Subject: ${variables.emailType || "Business Communication"} - ${
+      variables.purpose || "Important Matter"
     }
 
 Dear ${variables.recipient || "Colleague"},
 
-I hope this email finds you well. I am writing to ${variables.purpose || "discuss an important business matter"}.
+I hope this email finds you well. I am writing regarding ${variables.purpose || "an important business matter"}.
 
-${
-  variables.additionalContext ? `${variables.additionalContext}\n\n` : ""
-}Thank you for your time and consideration. I look forward to your response.
+${variables.additionalContext ? `${variables.additionalContext}\n\n` : ""}Based on our ${
+      variables.relationship?.toLowerCase() || "professional"
+    } relationship, I wanted to reach out with a ${
+      variables.tone?.toLowerCase() || "professional"
+    } approach to discuss this matter.
+
+Thank you for your time and consideration. I look forward to your response.
 
 Best regards,
 ${variables.senderName || "Your Name"}`,
 
-    "cold-outreach": `Subject: ${variables.valueProposition ? "Partnership Opportunity" : "Introduction"} - ${
+    "cold-outreach": `Subject: ${variables.valueProposition ? "Potential Partnership Opportunity" : "Introduction"} - ${
       variables.senderCompany || "Your Company"
     }
 
@@ -127,78 +131,118 @@ ${variables.connectionPoint ? `${variables.connectionPoint}\n\n` : ""}I'm ${vari
       variables.senderCompany || "Your Company"
     }. ${variables.valueProposition || "I wanted to reach out about a potential opportunity."} 
 
-${
-  variables.recipientInterest ? `I believe this could help with ${variables.recipientInterest}.\n\n` : ""
-}Would you be interested in ${variables.callToAction || "learning more"}?
+${variables.recipientInterest ? `I believe this could help with ${variables.recipientInterest}.\n\n` : ""}${
+      variables.callToAction === "Schedule a 15-minute call"
+        ? "Would you be available for a brief 15-minute call next week?"
+        : variables.callToAction === "Meet for coffee"
+        ? "Would you be interested in meeting for coffee to discuss this further?"
+        : variables.callToAction === "Quick demo"
+        ? "I'd love to show you a quick demo of how this could work for your team."
+        : variables.callToAction === "Send more information"
+        ? "I can send you more detailed information if you're interested."
+        : variables.callToAction === "Connect on LinkedIn"
+        ? "I'd love to connect with you on LinkedIn to continue the conversation."
+        : `Would you be interested in ${variables.callToAction?.toLowerCase() || "learning more"}?`
+    }
 
 Best regards,
-${variables.senderName || "Your Name"}`,
+${variables.senderName || "Your Name"}
+${variables.senderCompany || "Your Company"}`,
 
-    "customer-support": `Subject: Re: ${variables.issueType || "Support Request"} - We're Here to Help
+    "customer-support": `Subject: Re: ${variables.issueType || "Support Request"} - Resolution Update
 
 Dear ${variables.customerName || "Valued Customer"},
 
-Thank you for reaching out regarding ${
+Thank you for contacting our support team regarding ${
       variables.issueDescription || "your recent inquiry"
-    }. I understand your concern and I'm here to help resolve this matter.
+    }. I understand how ${
+      variables.priority === "High" || variables.priority === "Urgent" ? "urgent" : "important"
+    } this matter is to you.
 
-${variables.solution || "I will investigate this issue and provide you with a solution."} ${
+${variables.solution || "I have investigated your issue and will provide you with a solution."} ${
       variables.timeline ? `You can expect a resolution ${variables.timeline.toLowerCase()}.` : ""
     }
+
+${
+  variables.priority === "High" || variables.priority === "Urgent"
+    ? "Given the urgency of this matter, I will personally monitor the progress and keep you updated."
+    : "I will keep you informed of any updates throughout the resolution process."
+}
 
 Please don't hesitate to reach out if you have any questions or need further assistance.
 
 Best regards,
-${variables.supportRepName || "Support Team"}`,
+${variables.supportRepName || "Support Team"}
+Customer Support Specialist`,
 
     "job-application": `Subject: Application for ${variables.position || "Position"} at ${
-      variables.companyName || "Company"
+      variables.companyName || "Your Company"
     }
 
 Dear Hiring Manager,
 
-I am writing to express my strong interest in the ${variables.position || "position"} role at ${
-      variables.companyName || "your company"
-    }. 
+I am writing to express my ${
+      variables.tone?.toLowerCase().includes("enthusiastic") ? "strong enthusiasm" : "interest"
+    } in the ${variables.position || "position"} role at ${variables.companyName || "your company"}. 
 
 ${
-  variables.relevantExperience || "With my relevant experience"
+  variables.relevantExperience || "With my relevant professional experience"
 }, I am confident I would be a valuable addition to your team. My key skills include ${
       variables.keySkills || "various technical and professional competencies"
     }.
 
 ${
   variables.companyKnowledge ? `${variables.companyKnowledge}\n\n` : ""
-}I have attached my resume for your review and would welcome the opportunity to discuss how I can contribute to your team.
+}I am particularly drawn to this opportunity because it aligns perfectly with my career goals and passion for ${
+      variables.position?.toLowerCase().includes("engineer")
+        ? "technology and innovation"
+        : variables.position?.toLowerCase().includes("marketing")
+        ? "creative problem-solving and data-driven strategies"
+        : variables.position?.toLowerCase().includes("manager")
+        ? "leadership and strategic planning"
+        : "professional growth and excellence"
+    }.
 
-Thank you for your consideration.
+I have attached my resume for your review and would welcome the opportunity to discuss how my experience and ${
+      variables.tone?.toLowerCase().includes("enthusiastic") ? "enthusiasm" : "skills"
+    } can contribute to your team's success.
 
-Sincerely,
+Thank you for your consideration. I look forward to hearing from you.
+
+${variables.tone?.toLowerCase().includes("formal") ? "Sincerely" : "Best regards"},
 ${variables.applicantName || "Your Name"}`,
 
     "event-invitation": `Subject: You're Invited: ${variables.eventName || "Special Event"} - ${
       variables.eventDate || "Date TBD"
     }
 
-Dear Valued Guest,
-
-You're cordially invited to ${variables.eventName || "our upcoming event"}!
-
-📅 Date: ${variables.eventDate || "TBD"}
-🕐 Time: ${variables.eventTime || "TBD"}
-📍 Location: ${variables.eventLocation || "TBD"}
+Dear Guest,
 
 ${
-  variables.eventPurpose || "Join us for an exciting event where you can connect with peers and enjoy great activities."
+  variables.tone?.toLowerCase().includes("exciting") ? "We're thrilled to invite you" : "You're cordially invited"
+} to ${variables.eventName || "our upcoming event"}!
+
+📅 Date: ${variables.eventDate || "TBD"}
+🕐 Time: ${variables.eventTime || "TBD"}  
+📍 Location: ${variables.eventLocation || "TBD"}
+${variables.eventType ? `🎯 Event Type: ${variables.eventType}` : ""}
+
+${
+  variables.eventPurpose ||
+  "Join us for an exciting event where you can connect with others and enjoy great activities."
 }
 
-${variables.rsvpInstructions || "Please RSVP by replying to this email."}${
+${variables.rsvpInstructions || "Please RSVP by replying to this email or contacting us directly."}${
       variables.specialRequirements ? `\n\nPlease note: ${variables.specialRequirements}` : ""
     }
 
-We look forward to seeing you there!
+${
+  variables.tone?.toLowerCase().includes("casual") || variables.tone?.toLowerCase().includes("friendly")
+    ? "Can't wait to see you there!"
+    : "We look forward to your attendance."
+}
 
-Best regards,
+${variables.tone?.toLowerCase().includes("formal") ? "Sincerely" : "Best regards"},
 ${variables.hostName || "Event Host"}`,
   };
 
