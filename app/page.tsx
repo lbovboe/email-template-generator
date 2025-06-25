@@ -9,32 +9,38 @@ const features = [
   {
     icon: "🤖",
     title: "AI-Powered Generation",
-    description: "Leverage advanced language models to create professional, contextually appropriate emails instantly.",
+    description:
+      "Leverage advanced language models to create professional, contextually appropriate emails instantly.",
   },
   {
     icon: "📝",
     title: "Smart Templates",
-    description: "Choose from expertly crafted templates for business, sales, support, and personal communications.",
+    description:
+      "Choose from expertly crafted templates for business, sales, support, and personal communications.",
   },
   {
     icon: "⚡",
     title: "Lightning Fast",
-    description: "Generate professional emails in seconds with our optimized prompting engine and intuitive interface.",
+    description:
+      "Generate professional emails in seconds with our optimized prompting engine and intuitive interface.",
   },
   {
     icon: "🎯",
     title: "Contextually Relevant",
-    description: "Dynamic variables ensure every email is personalized and appropriate for your specific situation.",
+    description:
+      "Dynamic variables ensure every email is personalized and appropriate for your specific situation.",
   },
   {
     icon: "🔧",
     title: "Fully Customizable",
-    description: "Adjust tone, length, formality, and content to match your communication style perfectly.",
+    description:
+      "Adjust tone, length, formality, and content to match your communication style perfectly.",
   },
   {
     icon: "💼",
     title: "Professional Quality",
-    description: "Every generated email maintains professional standards with proper structure and etiquette.",
+    description:
+      "Every generated email maintains professional standards with proper structure and etiquette.",
   },
 ];
 
@@ -54,22 +60,25 @@ export default function HomePage() {
       <section className="relative py-20 lg:py-32">
         <div className="container-responsive">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium mb-8 animate-fade-in">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium mb-8 animate-fade-in">
               <span className="w-2 h-2 bg-purple-500 rounded-full mr-2 animate-pulse"></span>
               AI-Powered Email Generation
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 animate-slide-up">
-              Generate <span className="gradient-text">Professional Emails</span> <br className="hidden sm:inline" />
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 animate-slide-up">
+              Generate{" "}
+              <span className="gradient-text">Professional Emails</span>{" "}
+              <br className="hidden sm:inline" />
               in Seconds
             </h1>
 
             <p
-              className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed animate-slide-up"
+              className="text-xl lg:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed animate-slide-up"
               style={{ animationDelay: "0.2s" }}
             >
-              Transform your email communication with AI-powered templates. Create compelling business emails, cold
-              outreach, customer support responses, and more with our intelligent email generator.
+              Transform your email communication with AI-powered templates.
+              Create compelling business emails, cold outreach, customer support
+              responses, and more with our intelligent email generator.
             </p>
 
             <div
@@ -77,10 +86,7 @@ export default function HomePage() {
               style={{ animationDelay: "0.4s" }}
             >
               <Link href="/generator">
-                <Button
-                  size="xl"
-                  className="text-lg"
-                >
+                <Button size="xl" className="text-lg">
                   Start Generating Emails
                   <svg
                     className="w-5 h-5 ml-2"
@@ -99,11 +105,7 @@ export default function HomePage() {
               </Link>
 
               <Link href="/examples">
-                <Button
-                  variant="secondary"
-                  size="xl"
-                  className="text-lg"
-                >
+                <Button variant="secondary" size="xl" className="text-lg">
                   <svg
                     className="w-5 h-5 mr-2"
                     fill="none"
@@ -128,14 +130,11 @@ export default function HomePage() {
               style={{ animationDelay: "0.6s" }}
             >
               {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="text-center"
-                >
-                  <div className="text-3xl lg:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                <div key={index} className="text-center">
+                  <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">
                     {stat.value}
                   </div>
-                  <div className="text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
+                  <div className="text-gray-600 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -144,14 +143,15 @@ export default function HomePage() {
       </section>
 
       {/* Featured Templates Section */}
-      <section className="py-20 bg-gray-50/50 dark:bg-gray-900/50">
+      <section className="py-20 bg-gray-50/50">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Popular Email Templates
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Get started with our most popular templates, designed for common professional scenarios.
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Get started with our most popular templates, designed for common
+              professional scenarios.
             </p>
           </div>
 
@@ -196,11 +196,12 @@ export default function HomePage() {
       <section className="py-20">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Why Choose Our Email Generator?
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Powerful features designed to make your email communication more effective and efficient.
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Powerful features designed to streamline your email communication
+              and boost productivity.
             </p>
           </div>
 
@@ -208,12 +209,16 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="text-center animate-fade-in hover-lift bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-400/10 hover:-translate-y-2 transition-all duration-300 ease-out"
+                className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
@@ -223,10 +228,12 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
         <div className="container-responsive text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Transform Your Email Communication?</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
+            Ready to Transform Your Email Communication?
+          </h2>
           <p className="text-xl lg:text-2xl opacity-90 mb-10 max-w-2xl mx-auto">
-            Join thousands of professionals who use our AI email generator to create compelling, professional emails in
-            seconds.
+            Join thousands of professionals who use our AI email generator to
+            create compelling, professional emails in seconds.
           </p>
           <Link href="/generator">
             <Button

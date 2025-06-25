@@ -32,18 +32,15 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      business: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800",
-      personal:
-        "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800",
-      marketing:
-        "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border-purple-200 dark:border-purple-800",
-      support:
-        "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border-orange-200 dark:border-orange-800",
-      sales: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800",
+      business: "bg-blue-100 text-blue-700 border-blue-200",
+      personal: "bg-green-100 text-green-700 border-green-200",
+      marketing: "bg-purple-100 text-purple-700 border-purple-200",
+      support: "bg-orange-100 text-orange-700 border-orange-200",
+      sales: "bg-red-100 text-red-700 border-red-200",
     };
     return (
       colors[category as keyof typeof colors] ||
-      "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400 border-gray-200 dark:border-gray-800"
+      "bg-gray-100 text-gray-700 border-gray-200"
     );
   };
 
@@ -51,16 +48,16 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
     <div
       className={`
         relative group cursor-pointer
-        bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm
-        border border-gray-200/50 dark:border-gray-700/50
+        bg-white/80 backdrop-blur-sm
+        border border-gray-200/50
         rounded-2xl p-6 shadow-lg
-        hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-400/10
+        hover:shadow-2xl hover:shadow-purple-500/10
         hover:-translate-y-2 hover:scale-[1.02]
         transition-all duration-300 ease-out
         animate-fade-in overflow-hidden  flex flex-col
         ${
           featured
-            ? "ring-2 ring-purple-500/30 bg-gradient-to-br from-purple-50/50 to-blue-50/50 dark:from-purple-900/20 dark:to-blue-900/20"
+            ? "ring-2 ring-purple-500/30 bg-gradient-to-br from-purple-50/50 to-blue-50/50"
             : ""
         }
         ${className}
@@ -79,17 +76,21 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
       )}
 
       {/* Header with Icon and Title */}
-      <div className={`flex items-start space-x-4 mb-4 flex-1  ${featured ? "mt-2" : ""}`}>
+      <div
+        className={`flex items-start space-x-4 mb-4 flex-1  ${
+          featured ? "mt-2" : ""
+        }`}
+      >
         <div className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center text-2xl shadow-inner">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center text-2xl shadow-inner">
             {getCategoryIcon(template.category)}
           </div>
         </div>
         <div className=" min-w-0">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-200">
+          <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-200">
             {template.name}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 leading-relaxed">
+          <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">
             {template.description}
           </p>
         </div>
@@ -106,27 +107,30 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
         >
           {template.category}
         </span>
-        <span className="text-xs text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">
-          {template.variables.length} field{template.variables.length !== 1 ? "s" : ""}
+        <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded-md">
+          {template.variables.length} field
+          {template.variables.length !== 1 ? "s" : ""}
         </span>
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {template.tags.slice(0, 3).map((tag) => (
-          <span
-            key={tag}
-            className="px-2.5 py-1 bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400 text-xs font-medium rounded-lg border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm"
-          >
-            {tag}
-          </span>
-        ))}
-        {template.tags.length > 3 && (
-          <span className="px-2.5 py-1 bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400 text-xs font-medium rounded-lg border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
-            +{template.tags.length - 3} more
-          </span>
-        )}
-      </div>
+      {template.tags && template.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1 mt-auto">
+          {template.tags.slice(0, 3).map((tag, tagIndex) => (
+            <span
+              key={tagIndex}
+              className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-md"
+            >
+              {tag}
+            </span>
+          ))}
+          {template.tags.length > 3 && (
+            <span className="px-2 py-1 text-xs text-gray-400 bg-gray-50 rounded-md">
+              +{template.tags.length - 3}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Action Button */}
       <Button
@@ -153,8 +157,8 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
         </svg>
       </Button>
 
-      {/* Hover Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      {/* Hover Effect Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
     </div>
   );
 };

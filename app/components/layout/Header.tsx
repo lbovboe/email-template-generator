@@ -20,38 +20,39 @@ export const Header: React.FC = () => {
   };
 
   const getNavLinkClasses = (href: string) => {
-    const baseClasses = "relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group";
+    const baseClasses =
+      "relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group";
     const activeClasses = isActive(href)
-      ? "text-purple-600 dark:text-purple-400"
-      : "text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400";
+      ? "text-purple-600"
+      : "text-gray-600 hover:text-purple-600";
 
     return `${baseClasses} ${activeClasses}`;
   };
 
   const getMobileNavLinkClasses = (href: string) => {
-    const baseClasses = "block px-4 py-3 rounded-lg font-medium transition-all duration-200";
+    const baseClasses =
+      "block px-4 py-3 rounded-lg font-medium transition-all duration-200";
     const activeClasses = isActive(href)
-      ? "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20"
-      : "text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20";
+      ? "text-purple-600 bg-purple-50"
+      : "text-gray-600 hover:text-purple-600 hover:bg-purple-50";
 
     return `${baseClasses} ${activeClasses}`;
   };
 
-  const menuIconClasses = `w-6 h-6 transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""}`;
+  const menuIconClasses = `w-6 h-6 transition-transform duration-300 ${
+    isMenuOpen ? "rotate-180" : ""
+  }`;
 
   const mobileNavClasses = `md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
     isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
   }`;
 
   return (
-    <header className="relative z-50 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-800/50">
+    <header className="relative z-50 backdrop-blur-xl bg-white/80 border-b border-gray-200/50">
       <div className="container-responsive">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center space-x-3 group"
-          >
+          <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
               <div className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <Image
@@ -64,8 +65,12 @@ export const Header: React.FC = () => {
               <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300 -z-10" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl lg:text-2xl font-bold gradient-text">AI Email Generator</h1>
-              <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 -mt-1">Professional email templates</p>
+              <h1 className="text-xl lg:text-2xl font-bold gradient-text">
+                AI Email Generator
+              </h1>
+              <p className="text-xs lg:text-sm text-gray-500 -mt-1">
+                Professional email templates
+              </p>
             </div>
           </Link>
 
@@ -79,9 +84,9 @@ export const Header: React.FC = () => {
               >
                 {item.name}
                 {isActive(item.href) && (
-                  <div className="absolute inset-0 bg-purple-100 dark:bg-purple-900/20 rounded-lg -z-10" />
+                  <div className="absolute inset-0 bg-purple-100 rounded-lg -z-10" />
                 )}
-                <div className="absolute inset-0 bg-purple-100 dark:bg-purple-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+                <div className="absolute inset-0 bg-purple-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
               </Link>
             ))}
           </nav>
@@ -92,10 +97,7 @@ export const Header: React.FC = () => {
               href="/generator"
               className={pathname === "/generator" ? "invisible" : ""}
             >
-              <Button
-                size="md"
-                className="shadow-lg"
-              >
+              <Button size="md" className="shadow-lg">
                 Start Generating
                 <svg
                   className="w-4 h-4 ml-2"
@@ -116,7 +118,7 @@ export const Header: React.FC = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -159,18 +161,12 @@ export const Header: React.FC = () => {
               </Link>
             ))}
             <div
-              className={`pt-4 border-t border-gray-200 dark:border-gray-700 ${
+              className={`pt-4 border-t border-gray-200 ${
                 pathname === "/generator" ? "invisible" : ""
               }`}
             >
-              <Link
-                href="/generator"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Button
-                  size="md"
-                  className="w-full"
-                >
+              <Link href="/generator" onClick={() => setIsMenuOpen(false)}>
+                <Button size="md" className="w-full">
                   Start Generating
                   <svg
                     className="w-4 h-4 ml-2"

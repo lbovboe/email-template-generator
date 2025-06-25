@@ -283,7 +283,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
             {commonProps.label && (
               <label
                 htmlFor={selectId}
-                className="form-label block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="form-label block text-sm font-medium text-gray-700 mb-2"
               >
                 {commonProps.label}
               </label>
@@ -306,14 +306,14 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
               className={`
                 relative w-full px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer
                 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent 
-                bg-white/70 dark:bg-gray-800/70 
-                hover:bg-white/80 dark:hover:bg-gray-800/80
+                bg-white/70 
+                hover:bg-white/80
                 ${
                   commonProps.error
-                    ? "border-red-300 bg-red-50/70 dark:bg-red-900/30 dark:border-red-800"
-                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                    ? "border-red-300 bg-red-50/70"
+                    : "border-gray-200 hover:border-gray-300"
                 }
-                text-gray-900 dark:text-white
+                text-gray-900
                 ${
                   isDropdownOpen
                     ? "ring-2 ring-purple-500/50 border-transparent"
@@ -324,13 +324,13 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
               <div className="flex items-center justify-between">
                 <span
                   className={`block truncate ${
-                    !selectedOption ? "text-gray-500 dark:text-gray-400" : ""
+                    !selectedOption ? "text-gray-500" : ""
                   }`}
                 >
                   {displayValue}
                 </span>
                 <svg
-                  className={`w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform duration-200 ${
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
                     isDropdownOpen ? "rotate-180" : ""
                   }`}
                   fill="none"
@@ -352,7 +352,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
               <div
                 id={`${selectId}-listbox`}
                 role="listbox"
-                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white/95 dark:bg-gray-800/95  border border-gray-200/50 dark:border-gray-700/50 rounded-xl shadow-xl max-h-60 overflow-auto"
+                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white/95 border border-gray-200/50 rounded-xl shadow-xl max-h-60 overflow-auto"
               >
                 {options.map((option, index) => (
                   <div
@@ -364,17 +364,13 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                     }
                     className={`
                       px-4 py-3 cursor-pointer transition-all duration-150
-                      hover:bg-purple-50 dark:hover:bg-purple-900/30
+                      hover:bg-purple-50
                       ${
                         option === value
-                          ? "bg-purple-100 dark:bg-purple-900/50 text-purple-900 dark:text-purple-100 font-medium"
-                          : "text-gray-900 dark:text-white"
+                          ? "bg-purple-100 text-purple-900 font-medium"
+                          : "text-gray-900"
                       }
-                      ${
-                        index === focusedIndex
-                          ? "bg-purple-50 dark:bg-purple-900/20"
-                          : ""
-                      }
+                      ${index === focusedIndex ? "bg-purple-50" : ""}
                       ${index === 0 ? "rounded-t-xl" : ""}
                       ${index === options.length - 1 ? "rounded-b-xl" : ""}
                     `.trim()}
@@ -383,7 +379,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                       <span className="block truncate">{option}</span>
                       {option === value && (
                         <svg
-                          className="w-4 h-4 text-purple-600 dark:text-purple-400 ml-2"
+                          className="w-4 h-4 text-purple-600 ml-2"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -398,7 +394,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                   </div>
                 ))}
                 {options.length === 0 && (
-                  <div className="px-4 py-3 text-gray-500 dark:text-gray-400 text-center">
+                  <div className="px-4 py-3 text-gray-500 text-center">
                     No options available
                   </div>
                 )}
@@ -406,12 +402,12 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
             )}
 
             {commonProps.error && (
-              <p className="form-error mt-2 text-sm text-red-600 dark:text-red-400">
+              <p className="form-error mt-2 text-sm text-red-600">
                 {commonProps.error}
               </p>
             )}
             {commonProps.helperText && !commonProps.error && (
-              <p className="form-help mt-2 text-sm text-gray-500 dark:text-gray-400">
+              <p className="form-help mt-2 text-sm text-gray-500">
                 {commonProps.helperText}
               </p>
             )}

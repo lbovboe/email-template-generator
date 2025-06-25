@@ -24,10 +24,10 @@ export const Button: React.FC<ButtonProps> = ({
     primary:
       "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:scale-105 hover:shadow-xl shadow-lg hover:from-purple-700 hover:to-blue-700",
     secondary:
-      "bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-200 hover:bg-white/20 hover:scale-105",
-    outline: "border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white hover:scale-105",
-    ghost:
-      "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100",
+      "bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 hover:bg-white/20 hover:scale-105",
+    outline:
+      "border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white hover:scale-105",
+    ghost: "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
     destructive:
       "bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 hover:scale-105 shadow-lg",
   };
@@ -39,26 +39,16 @@ export const Button: React.FC<ButtonProps> = ({
     xl: "px-10 py-5 text-xl",
   };
 
-  const buttonClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className || ""}`.trim();
+  const buttonClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${
+    className || ""
+  }`.trim();
 
   return (
-    <button
-      className={buttonClasses}
-      disabled={disabled || loading}
-      {...props}
-    >
-      {/* Shimmer effect for primary buttons */}
+    <button className={buttonClasses} disabled={disabled || loading} {...props}>
+      {loading && <div className="loading-spinner mr-2" />}
+      {children}
       {variant === "primary" && (
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-      )}
-
-      {loading ? (
-        <div className="flex items-center gap-2">
-          <div className="loading-spinner" />
-          <span>Loading...</span>
-        </div>
-      ) : (
-        children
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-700" />
       )}
     </button>
   );

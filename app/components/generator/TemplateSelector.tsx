@@ -1,52 +1,49 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState } from "react";
 import { TemplateCard } from "../ui/TemplateCard";
-import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { EmailTemplate } from "../../types/email";
 
 interface TemplateSelectorProps {
   templates: EmailTemplate[];
-  onSelect: (template: EmailTemplate) => void;
-  initialCategory?: string;
+  onSelectTemplate: (template: EmailTemplate) => void;
+  selectedTemplateId?: string;
 }
 
-export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, onSelect, initialCategory = "all" }) => {
+export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
+  templates,
+  onSelectTemplate,
+  selectedTemplateId,
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
-  useEffect(() => {
-    // Update selected category if initialCategory changes
-    setSelectedCategory(initialCategory);
-  }, [initialCategory]);
+  const categories = [
+    { value: "all", label: "All Categories" },
+    { value: "business", label: "Business" },
+    { value: "personal", label: "Personal" },
+    { value: "marketing", label: "Marketing" },
+    { value: "support", label: "Support" },
+    { value: "sales", label: "Sales" },
+  ];
 
-  const categories = useMemo(() => {
-    const cats = Array.from(new Set(templates.map((t) => t.category)));
-    return [
-      { value: "all", label: "All Categories" },
-      ...cats.map((cat) => ({
-        value: cat,
-        label: cat.charAt(0).toUpperCase() + cat.slice(1),
-      })),
-    ];
-  }, [templates]);
+  const filteredTemplates = templates.filter((template) => {
+    const matchesSearch =
+      template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || template.category === selectedCategory;
 
-  const filteredTemplates = useMemo(() => {
-    return templates.filter((template) => {
-      const matchesSearch =
-        template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        template.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        template.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesSearch && matchesCategory;
+  });
 
-      const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
-
-      return matchesSearch && matchesCategory;
-    });
-  }, [templates, searchQuery, selectedCategory]);
-
-  const featuredTemplates = filteredTemplates.filter((t) => t.featured);
-  const otherTemplates = filteredTemplates.filter((t) => !t.featured);
+  const featuredTemplates = filteredTemplates
+    .filter((template) => template.featured)
+    .slice(0, 3);
+  const regularTemplates = filteredTemplates.filter(
+    (template) => !template.featured
+  );
 
   return (
     <div>
@@ -64,19 +61,18 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
           <div className="lg:w-64">
             <select
               value={selectedCategory}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setSelectedCategory(e.target.value)
+              }
               className="w-full px-4 py-3 rounded-xl border transition-all duration-300 
                 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent 
-                bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm
-                hover:bg-white/80 dark:hover:bg-gray-800/80
-                border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600
-                text-gray-900 dark:text-white text-lg"
+                bg-white/70 backdrop-blur-sm
+                hover:bg-white/80
+                border-gray-200 hover:border-gray-300
+                text-gray-900 text-lg"
             >
               {categories.map((category) => (
-                <option
-                  key={category.value}
-                  value={category.value}
-                >
+                <option key={category.value} value={category.value}>
                   {category.label}
                 </option>
               ))}
@@ -85,8 +81,9 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
         </div>
 
         {searchQuery && (
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            Found {filteredTemplates.length} template{filteredTemplates.length !== 1 ? "s" : ""}
+          <div className="text-sm text-gray-600">
+            Found {filteredTemplates.length} template
+            {filteredTemplates.length !== 1 ? "s" : ""}
             {searchQuery && ` matching "${searchQuery}"`}
           </div>
         )}
@@ -95,8 +92,8 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
       {/* Featured Templates */}
       {featuredTemplates.length > 0 && (
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-            <span className="text-2xl mr-2">⭐</span>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+            <span className="mr-3">⭐</span>
             Featured Templates
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -104,48 +101,51 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
               <TemplateCard
                 key={template.id}
                 template={template}
-                onSelect={onSelect}
-                featured
+                onSelect={onSelectTemplate}
+                featured={true}
                 index={index}
+                className={
+                  selectedTemplateId === template.id
+                    ? "ring-2 ring-purple-500"
+                    : ""
+                }
               />
             ))}
           </div>
         </div>
       )}
 
-      {/* Other Templates */}
-      {otherTemplates.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">All Templates</h2>
+      {/* All Templates */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">All Templates</h2>
+        {regularTemplates.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {otherTemplates.map((template, index) => (
+            {regularTemplates.map((template, index) => (
               <TemplateCard
                 key={template.id}
                 template={template}
-                onSelect={onSelect}
+                onSelect={onSelectTemplate}
                 index={index + featuredTemplates.length}
+                className={
+                  selectedTemplateId === template.id
+                    ? "ring-2 ring-purple-500"
+                    : ""
+                }
               />
             ))}
           </div>
-        </div>
-      )}
-
-      {filteredTemplates.length === 0 && (
-        <div className="text-center py-20">
-          <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No templates found</h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">Try adjusting your search terms or selected category.</p>
-          <Button
-            variant="outline"
-            onClick={() => {
-              setSearchQuery("");
-              setSelectedCategory("all");
-            }}
-          >
-            Clear Filters
-          </Button>
-        </div>
-      )}
+        ) : (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No templates found
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Try adjusting your search terms or selected category.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

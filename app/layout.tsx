@@ -13,7 +13,13 @@ export const metadata: Metadata = {
   title: "AI Email Generator - Professional Email Templates",
   description:
     "Generate professional emails with AI-powered templates. Create business emails, cold outreach, customer support responses, and more with our intelligent email generator.",
-  keywords: ["email generator", "AI email", "email templates", "business emails", "email automation"],
+  keywords: [
+    "email generator",
+    "AI email",
+    "email templates",
+    "business emails",
+    "email automation",
+  ],
   authors: [{ name: "AI Email Generator" }],
   openGraph: {
     title: "AI Email Generator - Professional Email Templates",
@@ -29,14 +35,15 @@ export const viewport: Viewport = {
   themeColor: "#6366f1",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} scroll-smooth`}
-    >
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
       <body
-        className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-purple-950`}
+        className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50`}
       >
         <div className="relative min-h-screen">
           {/* Background decorative elements */}
@@ -59,10 +66,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="relative z-10">{children}</main>
 
           {/* Footer */}
-          <footer className="relative z-10 mt-auto py-8 px-4 border-t border-gray-200/50 dark:border-gray-800/50 backdrop-blur-sm">
+          <footer className="relative z-10 mt-auto py-8 px-4 border-t border-gray-200/50 backdrop-blur-sm">
             <div className="container-responsive text-center">
-              <p className="text-gray-600 dark:text-gray-400 text-sm">
-                © 2025 AI Email Generator. Powered by advanced language models for professional communication.
+              <p className="text-gray-600 text-sm">
+                © 2025 AI Email Generator. Powered by advanced language models
+                for professional communication.
               </p>
             </div>
           </footer>
