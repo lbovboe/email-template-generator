@@ -278,6 +278,7 @@
   .form-help {
     @apply text-sm text-gray-500 dark:text-gray-400;
   }
+
 }
 
 /* Custom animations */

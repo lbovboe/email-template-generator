@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
-import { Select } from "../ui/Select";
 import { EmailTemplate, EmailVariable, FormData } from "../../types/email";
 import { sessionStore } from "../../utils/sessionStorage";
 
@@ -143,15 +142,60 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
         );
 
       case "select":
+        const selectId = `select-${variable.name}`;
         return (
-          <Select
+          <div
             key={variable.name}
-            value={value}
-            onChange={(e) => handleFieldChange(variable, e.target.value)}
-            options={(variable.options || []).map((opt) => ({ value: opt, label: opt }))}
-            placeholder={variable.placeholder || `Select ${variable.label.toLowerCase()}`}
-            {...commonProps}
-          />
+            className="relative w-full"
+          >
+            {commonProps.label && (
+              <label
+                htmlFor={selectId}
+                className="form-label block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                {commonProps.label}
+              </label>
+            )}
+            <select
+              id={selectId}
+              value={value}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleFieldChange(variable, e.target.value)}
+              onBlur={commonProps.onBlur}
+              className={`
+                w-full px-4 py-3 rounded-xl border transition-all duration-300 
+                focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent 
+                bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm
+                hover:bg-white/80 dark:hover:bg-gray-800/80
+                ${
+                  commonProps.error
+                    ? "border-red-300 bg-red-50/70 dark:bg-red-900/30 dark:border-red-800"
+                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                }
+                text-gray-900 dark:text-white
+              `.trim()}
+            >
+              <option
+                value=""
+                disabled
+              >
+                {variable.placeholder || `Select ${variable.label.toLowerCase()}`}
+              </option>
+              {(variable.options || []).map((opt) => (
+                <option
+                  key={opt}
+                  value={opt}
+                >
+                  {opt}
+                </option>
+              ))}
+            </select>
+            {commonProps.error && (
+              <p className="form-error mt-2 text-sm text-red-600 dark:text-red-400">{commonProps.error}</p>
+            )}
+            {commonProps.helperText && !commonProps.error && (
+              <p className="form-help mt-2 text-sm text-gray-500 dark:text-gray-400">{commonProps.helperText}</p>
+            )}
+          </div>
         );
 
       case "number":

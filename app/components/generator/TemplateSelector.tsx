@@ -4,7 +4,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import { TemplateCard } from "../ui/TemplateCard";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import { Select } from "../ui/Select";
 import { EmailTemplate } from "../../types/email";
 
 interface TemplateSelectorProps {
@@ -63,12 +62,25 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
             />
           </div>
           <div className="lg:w-64">
-            <Select
+            <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              options={categories}
-              placeholder="Select category"
-            />
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border transition-all duration-300 
+                focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent 
+                bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm
+                hover:bg-white/80 dark:hover:bg-gray-800/80
+                border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600
+                text-gray-900 dark:text-white text-lg"
+            >
+              {categories.map((category) => (
+                <option
+                  key={category.value}
+                  value={category.value}
+                >
+                  {category.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
