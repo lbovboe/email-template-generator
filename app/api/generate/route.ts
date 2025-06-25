@@ -160,47 +160,83 @@ function generateColdOutreachDemo(variables: Record<string, string>): string {
   const recipientName = variables.recipientName || "Name";
   const senderName = variables.senderName || "Your Name";
   const senderCompany = variables.senderCompany || "Your Company";
-  const companyName = variables.companyName || "Their Company";
-  const recipientRole = variables.recipientRole || "Their Role";
+
+  // Optional fields - only use if provided
+  const companyName = variables.companyName || "";
+  const recipientRole = variables.recipientRole || "";
+  const industryContext = variables.industryContext || "";
+  const recipientInterest = variables.recipientInterest || "";
+
   const connectionPoint = variables.connectionPoint || "I came across your profile";
   const credibilityBuilder = variables.credibilityBuilder || "We have helped many companies";
   const valueProposition = variables.valueProposition || "We offer innovative solutions";
-  const industryContext = variables.industryContext || "your industry";
-  const recipientInterest = variables.recipientInterest || "";
   const callToAction = variables.callToAction || "Schedule a 15-minute call";
 
-  // Generate subject line based on outreach type
+  // Check if this is B2B (has company info) or B2C (individual)
+  const isB2B = companyName && recipientRole;
+
+  // Generate subject line based on outreach type and context
   const subjectLines = {
-    Customer: `${valueProposition.split(".")[0]} - ${senderCompany}`,
-    Partner: `Partnership Opportunity - ${senderCompany} x ${companyName}`,
+    Customer: isB2B
+      ? `${valueProposition.split(".")[0]} - ${senderCompany}`
+      : `${valueProposition.split(".")[0].substring(0, 50)}...`,
+    Partner: isB2B
+      ? `Partnership Opportunity - ${senderCompany} x ${companyName}`
+      : `Partnership Opportunity - ${senderCompany}`,
     Investor: `Investment Opportunity - ${senderCompany}`,
     "Professional Contact": `Introduction from ${senderName} - ${senderCompany}`,
   };
 
-  // Generate opening based on outreach type
+  // Generate opening based on outreach type and B2B vs B2C
   const openings = {
-    Customer: `Hi ${recipientName},\n\n${connectionPoint}. As the ${recipientRole} at ${companyName}, I thought you'd be interested in how ${credibilityBuilder.toLowerCase()}.`,
-    Partner: `Hi ${recipientName},\n\n${connectionPoint}. I believe there's a strong synergy between ${senderCompany} and ${companyName} that could benefit both our organizations.`,
-    Investor: `Hi ${recipientName},\n\n${connectionPoint}. Given your expertise in ${industryContext}, I wanted to share an exciting investment opportunity with ${senderCompany}.`,
-    "Professional Contact": `Hi ${recipientName},\n\n${connectionPoint}. I've been following your work in ${industryContext} and would love to connect and learn from your experience.`,
+    Customer: isB2B
+      ? `Hi ${recipientName},\n\n${connectionPoint}. As the ${recipientRole} at ${companyName}, I thought you'd be interested in how ${credibilityBuilder.toLowerCase()}.`
+      : `Hi ${recipientName},\n\n${connectionPoint}. I thought you'd be interested in how ${credibilityBuilder.toLowerCase()}.`,
+    Partner: isB2B
+      ? `Hi ${recipientName},\n\n${connectionPoint}. I believe there's a strong synergy between ${senderCompany} and ${companyName} that could benefit both our organizations.`
+      : `Hi ${recipientName},\n\n${connectionPoint}. I believe there's great potential for collaboration between us and ${senderCompany}.`,
+    Investor: industryContext
+      ? `Hi ${recipientName},\n\n${connectionPoint}. Given your expertise in ${industryContext}, I wanted to share an exciting investment opportunity with ${senderCompany}.`
+      : `Hi ${recipientName},\n\n${connectionPoint}. I wanted to share an exciting investment opportunity with ${senderCompany}.`,
+    "Professional Contact": industryContext
+      ? `Hi ${recipientName},\n\n${connectionPoint}. I've been following your work in ${industryContext} and would love to connect and learn from your experience.`
+      : `Hi ${recipientName},\n\n${connectionPoint}. I'd love to connect and learn from your experience.`,
   };
 
-  // Generate main content based on outreach type
+  // Generate main content based on outreach type and context
   const content = {
-    Customer: `${valueProposition}\n\n${credibilityBuilder}, and I believe we could deliver similar results for ${companyName}.${
-      recipientInterest ? ` Given your focus on ${recipientInterest}, this seems particularly relevant.` : ""
-    }`,
-    Partner: `${valueProposition}\n\nBased on ${credibilityBuilder}, I see great potential for a strategic partnership.${
-      recipientInterest
-        ? ` Particularly around ${recipientInterest}, where our capabilities complement each other.`
-        : ""
-    }`,
-    Investor: `${valueProposition}\n\nOur traction includes: ${credibilityBuilder}. The market opportunity in ${industryContext} is significant and growing rapidly.${
-      recipientInterest ? ` Your experience with ${recipientInterest} would be invaluable as we scale.` : ""
-    }`,
-    "Professional Contact": `I'm always eager to connect with thought leaders in ${industryContext}. ${credibilityBuilder}, and I'd love to share insights and learn from your experience.${
-      recipientInterest ? ` I'm particularly interested in your perspective on ${recipientInterest}.` : ""
-    }`,
+    Customer: isB2B
+      ? `${valueProposition}\n\n${credibilityBuilder}, and I believe we could deliver similar results for ${companyName}.${
+          recipientInterest ? ` Given your focus on ${recipientInterest}, this seems particularly relevant.` : ""
+        }`
+      : `${valueProposition}\n\n${credibilityBuilder}, and I believe this could be valuable for you.${
+          recipientInterest ? ` Given your interest in ${recipientInterest}, this seems particularly relevant.` : ""
+        }`,
+    Partner: isB2B
+      ? `${valueProposition}\n\nBased on ${credibilityBuilder}, I see great potential for a strategic partnership.${
+          recipientInterest
+            ? ` Particularly around ${recipientInterest}, where our capabilities complement each other.`
+            : ""
+        }`
+      : `${valueProposition}\n\nBased on ${credibilityBuilder}, I see great potential for collaboration.${
+          recipientInterest
+            ? ` Particularly around ${recipientInterest}, where we could work together effectively.`
+            : ""
+        }`,
+    Investor: industryContext
+      ? `${valueProposition}\n\nOur traction includes: ${credibilityBuilder}. The market opportunity in ${industryContext} is significant and growing rapidly.${
+          recipientInterest ? ` Your experience with ${recipientInterest} would be invaluable as we scale.` : ""
+        }`
+      : `${valueProposition}\n\nOur traction includes: ${credibilityBuilder}. The market opportunity is significant and growing rapidly.${
+          recipientInterest ? ` Your experience with ${recipientInterest} would be invaluable as we scale.` : ""
+        }`,
+    "Professional Contact": industryContext
+      ? `I'm always eager to connect with thought leaders in ${industryContext}. ${credibilityBuilder}, and I'd love to share insights and learn from your experience.${
+          recipientInterest ? ` I'm particularly interested in your perspective on ${recipientInterest}.` : ""
+        }`
+      : `I'm always eager to connect with accomplished professionals. ${credibilityBuilder}, and I'd love to share insights and learn from your experience.${
+          recipientInterest ? ` I'm particularly interested in your perspective on ${recipientInterest}.` : ""
+        }`,
   };
 
   // Generate call to action

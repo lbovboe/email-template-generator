@@ -101,9 +101,10 @@ Write an email to {recipient} following all the above specifications precisely. 
     id: "cold-outreach",
     name: "Cold Outreach Email",
     category: "sales",
-    description: "Professional cold outreach template for customers, partners, investors, and professional contacts",
+    description:
+      "Flexible cold outreach template for B2B and B2C scenarios - customers, partners, investors, and professional contacts",
     featured: true,
-    tags: ["sales", "networking", "outreach", "partnership", "investment"],
+    tags: ["sales", "networking", "outreach", "partnership", "investment", "B2B", "B2C"],
     systemPrompt: `You are an expert in cold outreach communications. Write a compelling outreach email tailored for {outreachType} outreach that:
 
 OUTREACH TYPE GUIDELINES:
@@ -113,25 +114,31 @@ OUTREACH TYPE GUIDELINES:
 - For PROFESSIONAL CONTACTS: Build relationships and explore networking opportunities
 
 EMAIL STRUCTURE:
-- Open with a personalized hook mentioning {connectionPoint} related to {recipientName} who is {recipientRole} at {companyName}
+- Open with a personalized hook mentioning {connectionPoint} related to {recipientName}
+- If recipient has company/role ({recipientRole} at {companyName}): Address them professionally in their business context
+- If recipient is individual: Use more personal, direct approach focusing on them personally
 - Establish credibility early using: {credibilityBuilder}
 - Present value proposition tailored to {outreachType}: {valueProposition}
-- Show understanding of their {industryContext} and {recipientInterest}
+- If industry context provided ({industryContext}): Show understanding of their sector/background
+- If recipient interests known ({recipientInterest}): Reference their specific challenges/interests
 - Use {tone} tone while maintaining professionalism
 - Include specific, clear call-to-action: {callToAction}
 - Keep concise and respectful of their time
 - End with appropriate signature using {senderName} from {senderCompany}
 
+CONTEXT ADAPTATION:
+- Adapt the tone and approach based on whether this is B2B professional outreach or individual/consumer outreach
+- Use more formal language when company/role information is provided
+- Use more personal, relatable language when reaching out to individuals
+- Tailor industry references and language to their background when known
+
 CONTEXT:
 Sender: {senderName}
 Company: {senderCompany}  
 Recipient: {recipientName}
-Recipient Role: {recipientRole}
-Recipient Company: {companyName}
 Outreach Purpose: {outreachType}
-Industry Context: {industryContext}
 
-Write a {outreachType} outreach email that feels personal, valuable, and appropriate for someone who doesn't know you yet.`,
+Write a {outreachType} outreach email that feels personal, valuable, and appropriate for someone who doesn't know you yet. Adapt the tone and approach based on whether this is B2B professional outreach or individual/consumer outreach.`,
     variables: [
       {
         name: "outreachType",
@@ -150,22 +157,6 @@ Write a {outreachType} outreach email that feels personal, valuable, and appropr
         description: "The full name of the person you're contacting",
       },
       {
-        name: "recipientRole",
-        label: "Recipient Role",
-        type: "text",
-        required: true,
-        placeholder: "VP of Marketing",
-        description: "Their job title or position",
-      },
-      {
-        name: "companyName",
-        label: "Their Company",
-        type: "text",
-        required: true,
-        placeholder: "TechCorp Inc.",
-        description: "The company they work for",
-      },
-      {
         name: "senderName",
         label: "Your Name",
         type: "text",
@@ -182,12 +173,28 @@ Write a {outreachType} outreach email that feels personal, valuable, and appropr
         description: "Your company name",
       },
       {
-        name: "industryContext",
-        label: "Industry Context",
+        name: "recipientRole",
+        label: "Recipient Role",
         type: "text",
-        required: true,
+        required: false,
+        placeholder: "VP of Marketing",
+        description: "Their job title or position (optional - for B2B outreach)",
+      },
+      {
+        name: "companyName",
+        label: "Their Company",
+        type: "text",
+        required: false,
+        placeholder: "TechCorp Inc.",
+        description: "The company they work for (optional - for B2B outreach)",
+      },
+      {
+        name: "industryContext",
+        label: "Industry/Context",
+        type: "text",
+        required: false,
         placeholder: "B2B SaaS marketing technology",
-        description: "Their industry or business sector",
+        description: "Their industry, business sector, or relevant context (optional)",
       },
       {
         name: "valueProposition",
@@ -224,7 +231,7 @@ Write a {outreachType} outreach email that feels personal, valuable, and appropr
         type: "text",
         required: false,
         placeholder: "improving lead quality and attribution tracking",
-        description: "What challenges or interests might they have relevant to your outreach?",
+        description: "What challenges or interests might they have relevant to your outreach? (optional)",
       },
       {
         name: "callToAction",
