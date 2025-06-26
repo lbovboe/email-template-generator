@@ -123,7 +123,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
           e.stopPropagation();
           onSelect(template);
         }}
-        className="w-full group-hover:bg-orange-600 group-hover:border-orange-600 transition-all duration-200 transform group-hover:scale-[1.02]"
+        className="w-full group-hover:bg-orange-600 group-hover:border-orange-600 transition-all duration-200 transform group-hover:scale-[1.02] mt-2"
         size="sm"
       >
         <span>Use This Template</span>
