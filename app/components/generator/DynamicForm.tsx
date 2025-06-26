@@ -13,22 +13,14 @@ interface DynamicFormProps {
   isLoading: boolean;
 }
 
-export const DynamicForm: React.FC<DynamicFormProps> = ({
-  template,
-  onSubmit,
-  isLoading,
-}) => {
+export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, isLoading }) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
 
   // Custom dropdown state
-  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
-    {}
-  );
-  const [focusedOptions, setFocusedOptions] = useState<Record<string, number>>(
-    {}
-  );
+  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+  const [focusedOptions, setFocusedOptions] = useState<Record<string, number>>({});
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Load saved form data on component mount
@@ -76,11 +68,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
     }));
   };
 
-  const selectOption = (
-    fieldName: string,
-    value: string,
-    variable: EmailVariable
-  ) => {
+  const selectOption = (fieldName: string, value: string, variable: EmailVariable) => {
     handleFieldChange(variable, value);
     setOpenDropdowns((prev) => ({
       ...prev,
@@ -138,14 +126,8 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
     }
   };
 
-  const validateField = (
-    variable: EmailVariable,
-    value: string
-  ): string | null => {
-    if (
-      variable.required &&
-      (!value || (typeof value === "string" && value.trim() === ""))
-    ) {
+  const validateField = (variable: EmailVariable, value: string): string | null => {
+    if (variable.required && (!value || (typeof value === "string" && value.trim() === ""))) {
       return `${variable.label} is required`;
     }
 
@@ -224,9 +206,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
 
   const renderField = (variable: EmailVariable) => {
     const value = formData[variable.name] || "";
-    const error = touchedFields.has(variable.name)
-      ? errors[variable.name]
-      : undefined;
+    const error = touchedFields.has(variable.name) ? errors[variable.name] : undefined;
     const isRequired = variable.required;
 
     const commonProps = {
@@ -267,10 +247,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
         const focusedIndex = focusedOptions[variable.name] || -1;
         const options = variable.options || [];
         const selectedOption = options.find((opt) => opt === value);
-        const displayValue =
-          selectedOption ||
-          variable.placeholder ||
-          `Select ${variable.label.toLowerCase()}`;
+        const displayValue = selectedOption || variable.placeholder || `Select ${variable.label.toLowerCase()}`;
 
         return (
           <div
@@ -299,36 +276,20 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
               aria-label={commonProps.label}
               tabIndex={0}
               onClick={() => toggleDropdown(variable.name)}
-              onKeyDown={(e) =>
-                handleDropdownKeyDown(e, variable.name, variable, options)
-              }
+              onKeyDown={(e) => handleDropdownKeyDown(e, variable.name, variable, options)}
               onBlur={commonProps.onBlur}
               className={`
                 relative w-full px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer
-                focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent 
+                                  focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent 
                 bg-white/70 
                 hover:bg-white/80
-                ${
-                  commonProps.error
-                    ? "border-red-300 bg-red-50/70"
-                    : "border-gray-200 hover:border-gray-300"
-                }
+                ${commonProps.error ? "border-red-300 bg-red-50/70" : "border-gray-200 hover:border-gray-300"}
                 text-gray-900
-                ${
-                  isDropdownOpen
-                    ? "ring-2 ring-purple-500/50 border-transparent"
-                    : ""
-                }
+                                 ${isDropdownOpen ? "ring-2 ring-orange-500/50 border-transparent" : ""}
               `.trim()}
             >
               <div className="flex items-center justify-between">
-                <span
-                  className={`block truncate ${
-                    !selectedOption ? "text-gray-500" : ""
-                  }`}
-                >
-                  {displayValue}
-                </span>
+                <span className={`block truncate ${!selectedOption ? "text-gray-500" : ""}`}>{displayValue}</span>
                 <svg
                   className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
                     isDropdownOpen ? "rotate-180" : ""
@@ -359,18 +320,16 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                     key={option}
                     role="option"
                     aria-selected={option === value}
-                    onClick={() =>
-                      selectOption(variable.name, option, variable)
-                    }
+                    onClick={() => selectOption(variable.name, option, variable)}
                     className={`
                       px-4 py-3 cursor-pointer transition-all duration-150
-                      hover:bg-purple-50
-                      ${
-                        option === value
-                          ? "bg-purple-100 text-purple-900 font-medium"
-                          : "text-gray-900"
-                      }
-                      ${index === focusedIndex ? "bg-purple-50" : ""}
+                      hover:bg-orange-50
+                                              ${
+                                                option === value
+                                                  ? "bg-orange-100 text-orange-900 font-medium"
+                                                  : "text-gray-900"
+                                              }
+                                              ${index === focusedIndex ? "bg-orange-50" : ""}
                       ${index === 0 ? "rounded-t-xl" : ""}
                       ${index === options.length - 1 ? "rounded-b-xl" : ""}
                     `.trim()}
@@ -379,7 +338,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                       <span className="block truncate">{option}</span>
                       {option === value && (
                         <svg
-                          className="w-4 h-4 text-purple-600 ml-2"
+                          className="w-4 h-4 text-orange-600 ml-2"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -394,22 +353,14 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
                   </div>
                 ))}
                 {options.length === 0 && (
-                  <div className="px-4 py-3 text-gray-500 text-center">
-                    No options available
-                  </div>
+                  <div className="px-4 py-3 text-gray-500 text-center">No options available</div>
                 )}
               </div>
             )}
 
-            {commonProps.error && (
-              <p className="form-error mt-2 text-sm text-red-600">
-                {commonProps.error}
-              </p>
-            )}
+            {commonProps.error && <p className="form-error mt-2 text-sm text-red-600">{commonProps.error}</p>}
             {commonProps.helperText && !commonProps.error && (
-              <p className="form-help mt-2 text-sm text-gray-500">
-                {commonProps.helperText}
-              </p>
+              <p className="form-help mt-2 text-sm text-gray-500">{commonProps.helperText}</p>
             )}
           </div>
         );
@@ -429,9 +380,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
       case "multiselect":
         // For now, we'll render as text input with comma separation
         const multiselectHelperText = `${variable.description || ""} ${
-          variable.description
-            ? "(separate multiple items with commas)"
-            : "Separate multiple items with commas"
+          variable.description ? "(separate multiple items with commas)" : "Separate multiple items with commas"
         }`;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { helperText: _, ...multiselectCommonProps } = commonProps;
@@ -441,9 +390,7 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
             type="text"
             value={value}
             onChange={(e) => handleFieldChange(variable, e.target.value)}
-            placeholder={
-              variable.placeholder || "Enter items separated by commas"
-            }
+            placeholder={variable.placeholder || "Enter items separated by commas"}
             helperText={multiselectHelperText}
             {...multiselectCommonProps}
           />
@@ -467,30 +414,27 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
 
   const requiredFields = template.variables.filter((v) => v.required).length;
   const completedFields = template.variables.filter(
-    (v) =>
-      v.required &&
-      formData[v.name] &&
-      formData[v.name].toString().trim() !== ""
+    (v) => v.required && formData[v.name] && formData[v.name].toString().trim() !== ""
   ).length;
-  const progress =
-    requiredFields > 0 ? (completedFields / requiredFields) * 100 : 100;
+  const progress = requiredFields > 0 ? (completedFields / requiredFields) * 100 : 100;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
       {/* Progress Indicator */}
       <div className="bg-white/80 border border-gray-200/50 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Form Progress
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900">Form Progress</h3>
             <span className="text-sm text-gray-600">
               {completedFields} of {requiredFields} required fields completed
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+              className="bg-gradient-to-r from-yellow-500 to-orange-600 h-2 rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -501,18 +445,17 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
       <div className="bg-white/80 border border-gray-200/50 rounded-2xl shadow-lg">
         <div className="p-6 border-b border-gray-200/50">
           <h3 className="text-xl font-semibold text-gray-900">Email Details</h3>
-          <p className="text-gray-600">
-            Fill in the information below to customize your email template.
-          </p>
+          <p className="text-gray-600">Fill in the information below to customize your email template.</p>
         </div>
         <div className="p-6 space-y-6">
           <div className="grid gap-6">
             {template.variables.map((variable) => (
-              <div key={variable.name} className="">
+              <div
+                key={variable.name}
+                className=""
+              >
                 <div className="flex items-start space-x-3">
-                  <div className="text-2xl mt-2">
-                    {getFieldIcon(variable.type)}
-                  </div>
+                  <div className="text-2xl mt-2">{getFieldIcon(variable.type)}</div>
                   <div className="flex-1">{renderField(variable)}</div>
                 </div>
               </div>

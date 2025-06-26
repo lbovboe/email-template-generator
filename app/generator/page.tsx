@@ -34,12 +34,9 @@ export default function GeneratorPage() {
       <div className="container-responsive">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            AI Email Generator
-          </h1>
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">AI Email Generator</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Create professional emails in three simple steps: choose a template,
-            fill in details, and generate.
+            Create professional emails in three simple steps: choose a template, fill in details, and generate.
           </p>
         </div>
 
@@ -47,30 +44,24 @@ export default function GeneratorPage() {
         <div className="flex justify-center mb-12">
           <div className="flex items-center space-x-4 bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50">
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-purple-600 text-white shadow-lg">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-orange-600 text-white shadow-lg">
                 1
               </div>
-              <span className="ml-3 font-medium text-purple-600">
-                Select Template
-              </span>
+              <span className="ml-3 font-medium text-orange-600">Select Template</span>
             </div>
             <div className="w-12 h-0.5 bg-gray-200 mx-4" />
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-200 text-gray-600">
                 2
               </div>
-              <span className="ml-3 font-medium text-gray-600">
-                Fill Details
-              </span>
+              <span className="ml-3 font-medium text-gray-600">Fill Details</span>
             </div>
             <div className="w-12 h-0.5 bg-gray-200 mx-4" />
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-200 text-gray-600">
                 3
               </div>
-              <span className="ml-3 font-medium text-gray-600">
-                Generate Email
-              </span>
+              <span className="ml-3 font-medium text-gray-600">Generate Email</span>
             </div>
           </div>
         </div>

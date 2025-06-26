@@ -328,11 +328,11 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
         <div className="p-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="group hover:scale-105 transition-transform duration-200">
-              <div className="text-2xl font-bold text-purple-600">{getWordCount(processedEmail)}</div>
+              <div className="text-2xl font-bold text-orange-600">{getWordCount(processedEmail)}</div>
               <div className="text-sm text-gray-600">Words</div>
             </div>
             <div className="group hover:scale-105 transition-transform duration-200">
-              <div className="text-2xl font-bold text-blue-600">{getCharacterCount(processedEmail)}</div>
+              <div className="text-2xl font-bold text-yellow-600">{getCharacterCount(processedEmail)}</div>
               <div className="text-sm text-gray-600">Characters</div>
             </div>
             <div className="group hover:scale-105 transition-transform duration-200">
@@ -388,11 +388,11 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
 
       {/* Email Display */}
       <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl shadow-xl overflow-hidden">
-        <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50">
+        <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-orange-50/50 to-yellow-50/50">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold text-gray-900 flex items-center">
               <svg
-                className="w-5 h-5 mr-2 text-blue-600"
+                className="w-5 h-5 mr-2 text-orange-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -483,7 +483,7 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
               <div className="px-6 py-4 bg-gray-50/50 border-b border-gray-100">
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm font-medium">Me</span>
                     </div>
                     <div className="flex-1">
@@ -640,13 +640,13 @@ export const GeneratedEmail: React.FC<GeneratedEmailProps> = ({ email, template,
       </div>
 
       {/* Tips */}
-      <div className="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur-sm border border-blue-200 rounded-2xl shadow-lg">
+      <div className="bg-gradient-to-r from-orange-50/80 to-yellow-50/80 backdrop-blur-sm border border-orange-200 rounded-2xl shadow-lg">
         <div className="p-6">
           <div className="flex items-start space-x-3">
             <div className="text-2xl animate-bounce">💡</div>
             <div>
-              <h4 className="font-semibold text-blue-900 mb-2">Pro Tips for Using Your Email</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+              <h4 className="font-semibold text-orange-900 mb-2">Pro Tips for Using Your Email</h4>
+              <ul className="text-sm text-orange-800 space-y-1">
                 <li>• Review and personalize the email before sending</li>
                 <li>• Check all names, dates, and specific details</li>
                 <li>• Consider your company&apos;s email signature and formatting</li>

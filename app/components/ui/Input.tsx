@@ -23,21 +23,14 @@ export const Input: React.FC<InputProps> = ({
   const baseInputClasses =
     "w-full px-4 py-3 rounded-xl border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed";
 
-  const getInputClasses = (
-    variant: string,
-    error?: string,
-    className?: string
-  ) => {
+  const getInputClasses = (variant: string, error?: string, className?: string) => {
     const errorClasses = error
       ? "border-red-300 bg-red-50"
       : "border-gray-200 bg-white/50 backdrop-blur-sm hover:border-gray-300";
 
-    const variantClasses =
-      variant === "floating" ? "peer placeholder-transparent" : "";
+    const variantClasses = variant === "floating" ? "peer placeholder-transparent" : "";
 
-    return `${baseInputClasses} ${errorClasses} ${variantClasses} ${
-      className || ""
-    }`.trim();
+    return `${baseInputClasses} ${errorClasses} ${variantClasses} ${className || ""}`.trim();
   };
 
   if (variant === "floating") {
@@ -53,7 +46,7 @@ export const Input: React.FC<InputProps> = ({
           {label && (
             <label
               htmlFor={inputId}
-              className="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:bg-white"
+              className="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-orange-600 peer-focus:bg-white"
             >
               {label}
             </label>
@@ -68,7 +61,10 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className="form-group">
       {label && (
-        <label htmlFor={inputId} className="form-label">
+        <label
+          htmlFor={inputId}
+          className="form-label"
+        >
           {label}
         </label>
       )}

@@ -22,11 +22,9 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary:
-      "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:scale-105 hover:shadow-xl shadow-lg hover:from-purple-700 hover:to-blue-700",
-    secondary:
-      "bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 hover:bg-white/20 hover:scale-105",
-    outline:
-      "border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white hover:scale-105",
+      "bg-gradient-to-r from-yellow-500 to-orange-600 text-white hover:scale-105 hover:shadow-xl shadow-lg hover:from-yellow-600 hover:to-orange-700",
+    secondary: "bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 hover:bg-white/20 hover:scale-105",
+    outline: "border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white hover:scale-105",
     ghost: "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
     destructive:
       "bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 hover:scale-105 shadow-lg",
@@ -39,12 +37,14 @@ export const Button: React.FC<ButtonProps> = ({
     xl: "px-10 py-5 text-xl",
   };
 
-  const buttonClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${
-    className || ""
-  }`.trim();
+  const buttonClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className || ""}`.trim();
 
   return (
-    <button className={buttonClasses} disabled={disabled || loading} {...props}>
+    <button
+      className={buttonClasses}
+      disabled={disabled || loading}
+      {...props}
+    >
       {loading && <div className="loading-spinner mr-2" />}
       {children}
       {variant === "primary" && (

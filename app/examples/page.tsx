@@ -36,17 +36,15 @@ export default function ExamplesPage() {
   const filteredExamples =
     selectedCategory === "All"
       ? emailExamples
-      : emailExamples.filter(
-          (example) => example.category === selectedCategory
-        );
+      : emailExamples.filter((example) => example.category === selectedCategory);
 
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-purple-50 via-white to-blue-50">
+      <section className="py-20 bg-gradient-to-br from-orange-50 via-white to-yellow-50">
         <div className="container-responsive text-center">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium mb-8">
-            <span className="w-2 h-2 bg-purple-500 rounded-full mr-2 animate-pulse"></span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-700 text-sm font-medium mb-8">
+            <span className="w-2 h-2 bg-orange-500 rounded-full mr-2 animate-pulse"></span>
             Real Examples
           </div>
 
@@ -55,8 +53,8 @@ export default function ExamplesPage() {
           </h1>
 
           <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Browse through our collection of professionally generated emails to
-            see the quality and versatility of our AI-powered templates.
+            Browse through our collection of professionally generated emails to see the quality and versatility of our
+            AI-powered templates.
           </p>
 
           {/* Category Filter */}
@@ -69,8 +67,8 @@ export default function ExamplesPage() {
                   px-6 py-3 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2
                   ${
                     selectedCategory === category.name
-                      ? "bg-purple-600 text-white shadow-lg scale-105"
-                      : "bg-white text-gray-700 border border-gray-200 hover:border-purple-300 hover:bg-purple-50"
+                      ? "bg-orange-600 text-white shadow-lg scale-105"
+                      : "bg-white text-gray-700 border border-gray-200 hover:border-orange-300 hover:bg-orange-50"
                   }
                 `}
               >
@@ -95,12 +93,11 @@ export default function ExamplesPage() {
               >
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
+                    <span className="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
                       {example.category}
                     </span>
                     <span className="text-2xl">
-                      {categories.find((c) => c.name === example.category)
-                        ?.icon ||
+                      {categories.find((c) => c.name === example.category)?.icon ||
                         (example.category === "Career"
                           ? "👤"
                           : example.category === "Professional Events"
@@ -111,18 +108,13 @@ export default function ExamplesPage() {
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {example.title}
-                  </h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{example.title}</h3>
 
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {example.preview}
-                  </p>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">{example.preview}</p>
 
                   <div className="space-y-2 text-xs text-gray-500">
                     <div>
-                      <span className="font-medium">Use Case:</span>{" "}
-                      {example.useCase}
+                      <span className="font-medium">Use Case:</span> {example.useCase}
                     </div>
                     <div>
                       <span className="font-medium">Tone:</span> {example.tone}
@@ -132,11 +124,9 @@ export default function ExamplesPage() {
 
                 <div className="px-6 py-4 bg-gray-50 border-t border-gray-200/50">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">
-                      Click to view full email
-                    </span>
+                    <span className="text-sm text-gray-600">Click to view full email</span>
                     <svg
-                      className="w-4 h-4 text-purple-600"
+                      className="w-4 h-4 text-orange-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -157,20 +147,18 @@ export default function ExamplesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
         <div className="container-responsive text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Ready to Create Your Own?
-          </h2>
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Create Your Own?</h2>
           <p className="text-xl opacity-90 mb-10 max-w-2xl mx-auto">
-            These examples show just a fraction of what our AI can create.
-            Generate your own professional emails in seconds.
+            These examples show just a fraction of what our AI can create. Generate your own professional emails in
+            seconds.
           </p>
           <Link href="/generator">
             <Button
               variant="secondary"
               size="xl"
-              className="text-lg bg-white text-purple-600 hover:bg-gray-100"
+              className="text-lg bg-white text-orange-600 hover:bg-gray-100"
             >
               Start Generating Now
               <svg
@@ -197,9 +185,7 @@ export default function ExamplesPage() {
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900">
-                  {selectedEmail.title}
-                </h3>
+                <h3 className="text-2xl font-bold text-gray-900">{selectedEmail.title}</h3>
                 <p className="text-gray-600">
                   {selectedEmail.category} • {selectedEmail.tone}
                 </p>
@@ -227,18 +213,14 @@ export default function ExamplesPage() {
             <div className="p-6">
               <div className="bg-gray-50 rounded-xl p-6 mb-6">
                 <div className="text-sm text-gray-600 mb-2">Use Case:</div>
-                <div className="text-gray-900 mb-4">
-                  {selectedEmail.useCase}
-                </div>
+                <div className="text-gray-900 mb-4">{selectedEmail.useCase}</div>
 
                 <div className="text-sm text-gray-600 mb-2">Tone:</div>
                 <div className="text-gray-900">{selectedEmail.tone}</div>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="text-sm text-gray-600 mb-4">
-                  Generated Email:
-                </div>
+                <div className="text-sm text-gray-600 mb-4">Generated Email:</div>
                 <pre className="whitespace-pre-wrap text-gray-900 font-mono text-sm leading-relaxed">
                   {selectedEmail.fullEmail}
                 </pre>
