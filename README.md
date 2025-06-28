@@ -149,7 +149,7 @@ graph TB
         F[templates.ts] --> G[Email Templates]
         G --> H[System Prompts]
         G --> I[Variable Definitions]
-        H --> J[Placeholder Variables {name}]
+        H --> J["Placeholder Variables (name, email, etc)"]
     end
 
     subgraph "API Processing Layer"
