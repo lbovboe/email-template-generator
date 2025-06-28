@@ -128,6 +128,221 @@ A modern, professional email generator powered by the latest AI models including
 - **State Management**: React hooks
 - **Deployment**: Vercel-ready
 
+## 🏗️ Architecture & Data Flow
+
+### Process Overview
+
+The AI Email Generator follows a streamlined architecture that transforms user input into AI-generated emails through a sophisticated template system.
+
+### Data Flow Process
+
+```mermaid
+graph TB
+    subgraph "Frontend Layer"
+        A[User Interface] --> B[Template Selector]
+        B --> C[Dynamic Form Generator]
+        C --> D[Form Validation]
+        D --> E[API Request Handler]
+    end
+
+    subgraph "Template System"
+        F[templates.ts] --> G[Email Templates]
+        G --> H[System Prompts]
+        G --> I[Variable Definitions]
+        H --> J[Placeholder Variables {name}]
+    end
+
+    subgraph "API Processing Layer"
+        K[/api/generate Route] --> L[Request Validation]
+        L --> M[Variable Replacement Engine]
+        M --> N[Prompt Processing]
+        N --> O[AI Provider Selection]
+    end
+
+    subgraph "AI Services"
+        P[OpenAI GPT-4.1 Nano]
+        Q[Claude 3.5 Sonnet]
+        R[Demo Mode Fallback]
+    end
+
+    subgraph "Response Layer"
+        S[Generated Email Content] --> T[Content Formatting]
+        T --> U[Response Transmission]
+        U --> V[Generated Email Display]
+        V --> W[Copy/Download Features]
+    end
+
+    A --> F
+    B --> G
+    C --> I
+    E --> K
+    J --> M
+    O --> P
+    O --> Q
+    O --> R
+    P --> S
+    Q --> S
+    R --> S
+    U --> V
+```
+
+### Step-by-Step Process
+
+#### 1. **Template Selection & Form Generation**
+
+- User selects from predefined templates in `app/data/templates.ts`
+- Each template contains:
+  ```typescript
+  {
+    systemPrompt: "You are an expert email writer...",
+    variables: [
+      {
+        name: "recipientName",
+        label: "Recipient Name",
+        type: "text",
+        required: true
+      }
+    ]
+  }
+  ```
+- `DynamicForm.tsx` renders form fields based on template variables
+
+#### 2. **User Input Collection**
+
+- Dynamic form validates input in real-time
+- Form data structure:
+  ```typescript
+  {
+    template: EmailTemplate,
+    variables: { [key: string]: string },
+    provider: "openai" | "anthropic",
+    model?: string
+  }
+  ```
+
+#### 3. **API Request Processing**
+
+- POST request sent to `/api/generate`
+- Backend validates request structure
+- Variables extracted from form submission
+
+#### 4. **System Prompt Processing**
+
+The core transformation happens in `app/api/generate/route.ts`:
+
+```typescript
+// Original template prompt with placeholders
+let processedPrompt = template.systemPrompt;
+// "Write a {tone} email to {recipientName}..."
+
+// Variable replacement engine
+Object.entries(variables).forEach(([key, value]) => {
+  const placeholder = `\\{${key}\\}`;
+  if (value && value.trim() !== "") {
+    // Replace {recipientName} with "John Smith"
+    processedPrompt = processedPrompt.replace(new RegExp(placeholder, "g"), value);
+  } else {
+    // Remove empty placeholders
+    processedPrompt = processedPrompt.replace(new RegExp(placeholder, "g"), "");
+  }
+});
+```
+
+#### 5. **AI API Integration**
+
+**OpenAI Integration:**
+
+```typescript
+const response = await fetch("https://api.openai.com/v1/chat/completions", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${OPENAI_API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    model: "gpt-4.1-nano", // Latest, fastest, cheapest
+    messages: [
+      {
+        role: "user",
+        content: processedPrompt, // Fully processed prompt
+      },
+    ],
+    max_tokens: 4000,
+    temperature: 0.6,
+  }),
+});
+```
+
+**Claude Integration:**
+
+```typescript
+const response = await fetch("https://api.anthropic.com/v1/messages", {
+  method: "POST",
+  headers: {
+    "x-api-key": ANTHROPIC_API_KEY,
+    "Content-Type": "application/json",
+    "anthropic-version": "2023-06-01",
+  },
+  body: JSON.stringify({
+    model: "claude-3-5-sonnet-20241022",
+    max_tokens: 4000,
+    messages: [
+      {
+        role: "user",
+        content: processedPrompt,
+      },
+    ],
+  }),
+});
+```
+
+#### 6. **Response Processing & Display**
+
+- AI-generated content returned to frontend
+- `GeneratedEmail.tsx` displays formatted result
+- Features: copy to clipboard, download as file, word count
+
+### Template System Deep Dive
+
+Templates define the AI behavior through carefully crafted system prompts:
+
+```typescript
+systemPrompt: `You are an expert email writer. Write a {tone} email that:
+- Uses professional language appropriate for {relationship}
+- Addresses {recipientName} directly
+- Focuses on {purpose}
+- Maintains {length} structure
+- Ends with signature from {senderName}`;
+```
+
+### Variable Replacement Engine
+
+The replacement engine handles:
+
+- **Required variables**: Must be filled or generation fails
+- **Optional variables**: Gracefully removed if empty
+- **Validation**: Type checking and length limits
+- **Sanitization**: Safe string replacement
+
+### AI Model Selection Strategy
+
+**GPT-4.1 Nano (Default)**:
+
+- Optimized for speed and cost
+- 1M context window, 32K output
+- $0.10/M input + $0.40/M output tokens
+
+**Claude 3.5 Sonnet**:
+
+- Higher quality outputs
+- Better reasoning capabilities
+- Ideal for complex templates
+
+**Demo Mode**:
+
+- Fallback when no API keys provided
+- Pre-generated examples based on template type
+
 ## 📁 Project Structure
 
 ```
