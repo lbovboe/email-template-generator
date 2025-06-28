@@ -153,7 +153,7 @@ graph TB
     end
 
     subgraph "API Processing Layer"
-        K[/api/generate Route] --> L[Request Validation]
+        K["API Generate Route"] --> L[Request Validation]
         L --> M[Variable Replacement Engine]
         M --> N[Prompt Processing]
         N --> O[AI Provider Selection]
