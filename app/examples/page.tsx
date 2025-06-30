@@ -19,17 +19,8 @@ export default function ExamplesPage() {
   const [selectedEmail, setSelectedEmail] = useState<EmailExample | null>(null);
 
   const handleUseTemplate = (example: EmailExample) => {
-    // Find the corresponding template ID based on the example
-    const templateMapping: { [key: string]: string } = {
-      "Follow-up Email": "follow-up",
-      "Cold Outreach": "cold-outreach",
-      "Meeting Request": "meeting-request",
-      "Thank You Note": "thank-you",
-      "Product Launch": "product-launch",
-      "Customer Support": "customer-support",
-    };
-
-    const templateId = templateMapping[example.title] || "general-business";
+    // Use the templateId from the example data since it already matches templates.ts
+    const templateId = example.templateId || "professional-business";
     window.location.href = `/generator/${templateId}`;
   };
 
