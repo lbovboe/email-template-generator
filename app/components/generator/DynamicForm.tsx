@@ -18,14 +18,22 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({ template, onSubmit, is
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+  const [isClient, setIsClient] = useState(false);
 
-  // Load saved form data on component mount
+  // Handle client-side mounting to prevent hydration mismatch
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Load saved form data only after client-side mounting
+  useEffect(() => {
+    if (!isClient) return;
+
     const sessionData = sessionStore.get(template.id);
     if (sessionData.formData) {
       setFormData(sessionData.formData);
     }
-  }, [template.id]);
+  }, [template.id, isClient]);
 
   const validateField = (variable: EmailVariable, value: string): string | null => {
     if (variable.required && (!value || (typeof value === "string" && value.trim() === ""))) {

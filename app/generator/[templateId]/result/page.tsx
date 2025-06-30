@@ -14,8 +14,16 @@ export default function ResultPage() {
 
   const [template, setTemplate] = useState<EmailTemplate | null>(null);
   const [generatedEmail, setGeneratedEmail] = useState<string>("");
+  const [isClient, setIsClient] = useState(false);
+
+  // Handle client-side mounting to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
+    if (!isClient) return;
+
     const foundTemplate = getTemplateById(templateId);
     if (!foundTemplate) {
       // Redirect to generator home if template not found
@@ -40,7 +48,7 @@ export default function ResultPage() {
 
     setTemplate(foundTemplate);
     setGeneratedEmail(sessionData.generatedEmail);
-  }, [templateId, router]);
+  }, [templateId, router, isClient]);
 
   const handleStartOver = () => {
     sessionStore.clear(templateId);

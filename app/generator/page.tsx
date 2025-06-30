@@ -10,8 +10,16 @@ import { sessionStore } from "../utils/sessionStorage";
 export default function GeneratorPage() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [isClient, setIsClient] = useState(false);
+
+  // Handle client-side mounting to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
+    if (!isClient) return;
+
     // Check if there's a pre-selected category from examples page
     const storedCategory = sessionStorage.getItem("selectedCategory");
     if (storedCategory) {
@@ -19,7 +27,7 @@ export default function GeneratorPage() {
       // Clear the stored category after using it
       sessionStorage.removeItem("selectedCategory");
     }
-  }, []);
+  }, [isClient]);
 
   const handleTemplateSelect = (template: EmailTemplate) => {
     // Clear any existing session data for this template
